@@ -1,6 +1,7 @@
 namespace DroneBase.Interfaces
 {
-    public interface IDroneModel
+    public interface IDroneModel: IMove, IRotate
     {
+        
     }
 }
