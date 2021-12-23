@@ -5,17 +5,21 @@ using UnityEngine;
 
 namespace DroneBase.Systems
 {
-    public class MouseInputSystem: IInputSystem, IUpdatable, IDisposable
+    public class InputSystem: IInputSystem, IUpdatable, IDisposable
     {
         public event Action<Vector3> LeftMouseButtonClickPoint;
         public event Action<Vector3> RightMouseButtonClickPoint;
 
         private Camera _camera;
 
-        public MouseInputSystem(Camera camera)
+        public InputSystem(Camera camera)
         {
             _camera = camera;
             ServiceLocator.Get<UpdateLocalService>().RegisterUpdatable(this);
+        }
+        public Vector3 GetMousePosition()
+        {
+            return Input.mousePosition;
         }
 
         public void UpdateLocal(float deltaTime)

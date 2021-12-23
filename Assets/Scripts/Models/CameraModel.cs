@@ -4,25 +4,22 @@ using UnityEngine;
 
 namespace DroneBase.Models
 {
-    public class DroneModel: IDroneModel
+    public class CameraModel : ICameraModel
     {
         public float Speed { get; }
         public float RotationSpeed { get; }
         public Vector3 Position { get; private set; }
-        public Vector3 Direction { get;private set; }
-        public Vector3[] Path { get;private set; }
-        public Vector3 Target { get;private set; }
-        public Quaternion Rotation { get;private set; }
-        
-        public DroneModel(MoveData moveData, RotationData rotationData)
+        public Vector3 Direction { get; private set; }
+        public Quaternion Rotation { get; private set; }
+
+        public CameraModel(MoveData moveData, RotationData rotationData)
         {
-            Speed = moveData.Speed;
             Position = moveData.Position;
             RotationSpeed = rotationData.RotationSpeed;
+            Speed = moveData.Speed;
             Rotation = Quaternion.Euler(rotationData.Rotation);
         }
-        
-        
+
         public void SetPosition(Vector3 position)
         {
             Position = position;
@@ -32,20 +29,10 @@ namespace DroneBase.Models
         {
             Direction = direction;
         }
-
+        
         public void SetRotation(Quaternion rotation)
         {
             Rotation = rotation;
-        }
-
-        public void SetPath(Vector3[] path)
-        {
-            Path = path;
-        }
-
-        public void SetTarget(Vector3 target)
-        {
-            Target = target;
         }
     }
 }

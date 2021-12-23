@@ -1,4 +1,7 @@
-﻿using DroneBase.Interfaces;
+﻿using DroneBase.Data;
+using DroneBase.Interfaces;
+using DroneBase.Systems;
+using DroneBase.Views;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,27 +13,35 @@ namespace DroneBase.Controllers
         private IDroneView _droneView;
         private IMoveSystem _moveSystem;
         private IAbilitiesSystem _abilitiesSystem;
-        private INavigationSystem _navigationSystem;
 
-        public DroneController(
+        private DroneController(
             IDroneModel model,
             IDroneView view,
-            IMoveSystem moveSystem,
+            IMoveSystem moveSystem
            // IAbilitiesSystem abilitiesSystem,
-            INavigationSystem navigationSystem)
+           // INavigationSystem navigationSystem
+            )
         {
             _moveSystem = moveSystem;
             //_abilitiesSystem = abilitiesSystem;
-            _navigationSystem = navigationSystem;
             _droneModel = model;
             _droneView = view;
+        }
+
+        public static DroneController CreateDroneController(IDroneDescription description, SpawnPointData pointData)
+        {
+            var droneView =
+                Object.Instantiate(description.DronePrefab, pointData.PointPosition, pointData.Rotation).GetComponent<DroneView>();
+            var drone = new DroneController(description.DroneModel, droneView, new NavMeshMovingSystem(droneView.NavMeshAgent));
+
+            return drone;
         }
         
         public void SetTarget(Vector3 target)
         {
             CustomDebug.Log($"Unit set target = {target}");
             _droneModel.SetTarget(target);
-            _droneModel.SetPath(_navigationSystem.CalculatePath(_droneView.Transform.position, target));
+           // _droneModel.SetPath(_navigationSystem.CalculatePath(_droneView.Transform.position, target));
             _moveSystem.SetDestination(target);
         }
     }

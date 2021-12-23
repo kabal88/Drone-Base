@@ -1,62 +1,60 @@
 ﻿using System.Collections.Generic;
 using DroneBase.Interfaces;
+using DroneBase.Libraries;
 using DroneBase.Models;
 using DroneBase.Services;
 using DroneBase.Systems;
+using DroneBase.Views;
 using UnityEngine;
 
 namespace DroneBase.Controllers
 {
     public class GameController : IUpdatable, IFixUpdatable
     {
-        private IUpdatable _updateService;
-        private IFixUpdatable _fixUpdateService;
         private List<IUnitController> _unitControllers;
         private readonly Camera _camera;
         private PlayerController _playerController;
         private IDroneView _droneView;
+        private IInputSystem _inputSystem;
+        private GameModel _model;
 
-        public GameController(Camera camera, IDroneView droneView)
+        public GameController(GameModel model)
         {
-            _camera = camera;
-            _droneView = droneView;
+            _model = model;
         }
 
         public void StartGame()
         {
             SetupServices();
-            
-            _playerController = new PlayerController(new MouseInputSystem(_camera), new PlayerModel());
-            _unitControllers = new List<IUnitController>
-            {
-                new DroneController(new DroneModel(3.5f, 120f),
-                    _droneView,
-                    new NavMeshMovingSystem(_droneView.NavMeshAgent),
-                    new NavMeshNavigationSystem())
-            };
-            
+            _inputSystem = new InputSystem(_camera);
+            _playerController = new PlayerController(
+                _inputSystem,
+                new PlayerModel(),
+                new CameraController(new CameraView(), new CameraModel())
+                );
+
             _playerController.SetSelectedUnit(_unitControllers[0]);
         }
 
         private void SetupServices()
         {
             var updateService = new UpdateLocalService();
-            _updateService = updateService;
+            _model.SetUpdateService(updateService);
             ServiceLocator.SetService(updateService);
 
             var fixUpdateService = new FixUpdateLocalService();
-            _fixUpdateService = fixUpdateService;
+            _model.SetFixUpdateService(fixUpdateService);
             ServiceLocator.SetService(fixUpdateService);
         }
 
         public void UpdateLocal(float deltaTime)
         {
-            _updateService.UpdateLocal(deltaTime);
+            _model.UpdateService.UpdateLocal(deltaTime);
         }
 
         public void FixedUpdateLocal()
         {
-            _fixUpdateService.FixedUpdateLocal();
+            _model.FixUpdateService.FixedUpdateLocal();
         }
     }
 }

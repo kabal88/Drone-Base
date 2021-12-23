@@ -1,4 +1,5 @@
 ﻿using System;
+using DroneBase.Descriptions;
 using DroneBase.Interfaces;
 using UnityEngine;
 
@@ -8,12 +9,27 @@ namespace DroneBase.Controllers
     {
         private IPlayerModel _playerModel;
         private IInputSystem _inputSystem;
+        private ICameraController _cameraController;
 
-        public PlayerController(IInputSystem inputSystem, IPlayerModel playerModel)
+        private PlayerController(
+            IPlayerModel playerModel,
+            IInputSystem inputSystem,
+            ICameraController cameraController
+        )
         {
             _inputSystem = inputSystem;
             _playerModel = playerModel;
+            _cameraController = cameraController;
             _inputSystem.RightMouseButtonClickPoint += SetTarget;
+        }
+
+        public static PlayerController CreatePlayerController(
+            PlayerDescription description,
+            IInputSystem inputSystem,
+            ICameraController cameraController)
+        {
+            var player = new PlayerController(description.PlayerModel, inputSystem, cameraController);
+            return player;
         }
 
         private void SetTarget(Vector3 target)
