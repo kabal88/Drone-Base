@@ -1,16 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using DroneBase.Data;
 using DroneBase.Interfaces;
 using DroneBase.Libraries;
 
 namespace DroneBase.Models
 {
-    public class GameModel
+    public class GameModel : IGameModel
     {
         public IUpdatable UpdateService { get; private set; }
         public IFixUpdatable FixUpdateService { get; private set; }
-        private Library Library { get; }
+        public Library Library { get; private set; }
+        public GamePresetData PresetData { get; }
+        
+        public GameModel(GamePresetData presetData)
+        {
+            PresetData = presetData;
+        }
 
-        public GameModel(Library library)
+        public void Init(Library library)
         {
             Library = library;
         }
