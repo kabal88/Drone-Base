@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using DroneBase.Enums;
 using DroneBase.Interfaces;
 using DroneBase.Libraries;
 using DroneBase.Services;
+using DroneBase.Systems;
 
 namespace DroneBase.Controllers
 {
@@ -27,7 +30,12 @@ namespace DroneBase.Controllers
         public void StartGame()
         {
             SetupServices();
-            //var camera = CameraController.CreateCameraController(_model.Library.GetPlayerDescription(_model.PresetData.CameraContainerId))
+            var spawnSystem = new SpawnSystem();
+
+            var camera = CameraController.CreateCameraController(
+                _model.Library.GetCameraDescription(_model.PresetData.CameraContainerId),
+                spawnSystem.GetSpawnPointsByPredicate(x => x.Model.PointType == EntityType.Camera).First().Model
+                    .PointData);
            // _inputSystem = new InputSystem(_camera);
             // _playerController = PlayerController.CreatePlayerController(
             //     _model.Library.GetPlayerDescription(_model.PresetData.PlayerContainerId),
