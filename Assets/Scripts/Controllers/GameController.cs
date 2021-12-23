@@ -1,39 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DroneBase.Interfaces;
+using DroneBase.Models;
+using DroneBase.Services;
+using DroneBase.Systems;
+using UnityEngine;
 
 namespace DroneBase.Controllers
 {
     public class GameController : IUpdatable, IFixUpdatable
     {
-        private readonly List<IUpdatable> _updatables;
-        private readonly List<IFixUpdatable> _fixUpdatables;
+        private IUpdatable _updateService;
+        private IFixUpdatable _fixUpdateService;
+        private List<IUnitController> _unitControllers;
+        private readonly Camera _camera;
+        private PlayerController _playerController;
+        private IDroneView _droneView;
 
-        public GameController()
+        public GameController(Camera camera, IDroneView droneView)
         {
-            _updatables = new List<IUpdatable>();
-            _fixUpdatables = new List<IFixUpdatable>();
+            _camera = camera;
+            _droneView = droneView;
         }
 
         public void StartGame()
         {
+            SetupServices();
             
+            _playerController = new PlayerController(new MouseInputSystem(_camera), new PlayerModel());
+            _unitControllers = new List<IUnitController>
+            {
+                new DroneController(new DroneModel(3.5f, 120f),
+                    _droneView,
+                    new NavMeshMovingSystem(_droneView.NavMeshAgent),
+                    new NavMeshNavigationSystem())
+            };
+            
+            _playerController.SetSelectedUnit(_unitControllers[0]);
+        }
+
+        private void SetupServices()
+        {
+            var updateService = new UpdateLocalService();
+            _updateService = updateService;
+            ServiceLocator.SetService(updateService);
+
+            var fixUpdateService = new FixUpdateLocalService();
+            _fixUpdateService = fixUpdateService;
+            ServiceLocator.SetService(fixUpdateService);
         }
 
         public void UpdateLocal(float deltaTime)
         {
-            foreach (var updatable in _updatables)
-            {
-                updatable.UpdateLocal(deltaTime);
-            }
+            _updateService.UpdateLocal(deltaTime);
         }
 
         public void FixedUpdateLocal()
         {
-            foreach (var fixUpdatable in _fixUpdatables)
-            {
-                fixUpdatable.FixedUpdateLocal();
-            }
+            _fixUpdateService.FixedUpdateLocal();
         }
     }
 }

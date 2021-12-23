@@ -4,7 +4,7 @@ namespace DroneBase.Interfaces
 {
     public interface IRotate
     {
-        Quaternion Rotataion { get; }
+        Quaternion Rotation { get; }
         void SetRotation(Quaternion rotation);
         float RotationSpeed { get; }
     }

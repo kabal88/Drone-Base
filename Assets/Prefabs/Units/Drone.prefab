@@ -121,6 +121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2479648145954123476}
   - component: {fileID: 6149986267248117398}
+  - component: {fileID: 2086602002590692245}
   m_Layer: 27
   m_Name: Drone
   m_TagString: Untagged
@@ -166,6 +167,19 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &2086602002590692245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2477832996751174652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcb2ba52d92143128d89ff2184f012d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _navMeshAgent: {fileID: 6149986267248117398}
 --- !u!1 &2478445212308058398
 GameObject:
   m_ObjectHideFlags: 0
