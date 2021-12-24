@@ -18,6 +18,7 @@ namespace DroneBase.Libraries
         private Dictionary<int, IPlayerDescription> _playerDescriptions = new Dictionary<int, IPlayerDescription>();
         private Dictionary<int, ICameraDescription> _cameraDescriptions = new Dictionary<int, ICameraDescription>();
         private Dictionary<int, IGameDescription> _gameDescriptions = new Dictionary<int, IGameDescription>();
+        private Dictionary<int, ISpawnSystemDescription> _spawnSystemDescriptions = new Dictionary<int, ISpawnSystemDescription>();
 
         public void Init()
         {
@@ -52,6 +53,15 @@ namespace DroneBase.Libraries
                     _gameDescriptions.Add(description.GetDescription.Id,data);
                 }
             }
+
+            foreach (var description in Descriptions)
+            {
+                if (description.GetDescription is ISpawnSystemDescription data)
+                {
+                    _spawnSystemDescriptions.Add(description.GetDescription.Id,data);
+                }
+            }
+            
         }
 
         public void LoadAllAssets()
@@ -68,7 +78,7 @@ namespace DroneBase.Libraries
                 return needed;
             }
         
-            throw new Exception($"drone with id {id} not found");
+            throw new Exception($"drone desc. with id {id} not found");
         }
 
         public IPlayerDescription GetPlayerDescription(int id)
@@ -78,7 +88,7 @@ namespace DroneBase.Libraries
                 return needed;
             }
         
-            throw new Exception($"player with id {id} not found");
+            throw new Exception($"player desc. with id {id} not found");
         }
 
         public ICameraDescription GetCameraDescription(int id)
@@ -88,7 +98,7 @@ namespace DroneBase.Libraries
                 return needed;
             }
 
-            throw new Exception($"camera with id {id} not found");
+            throw new Exception($"camera desc. with id {id} not found");
         }
 
         public IGameDescription GetGameDescription(int id)
@@ -99,6 +109,16 @@ namespace DroneBase.Libraries
             }
 
             throw new Exception($"game desc. with id {id} not found");
+        }
+
+        public ISpawnSystemDescription GetSpawnSystemDescription(int id)
+        {
+            if (_spawnSystemDescriptions.TryGetValue(id, out var needed))
+            {
+                return needed;
+            }
+
+            throw new Exception($"SpawnSystem desc. with id {id} not found");
         }
     }
 }

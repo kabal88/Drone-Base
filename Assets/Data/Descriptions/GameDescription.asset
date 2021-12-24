@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea28dcc2d5fb4235b064d5241c9f80f0, type: 3}
+  m_Name: GameDescription
+  m_EditorClassIdentifier: 
+  description:
+    _identifierContainer: {fileID: 11400000, guid: 9b1dc6e781c9c3e4393f055091ecfd29, type: 2}
+    _presetData:
+      _playerIdentifierContainer: {fileID: 11400000, guid: a35ce805ec837464ea09dec346ab6654, type: 2}
+      _droneIdentifierContainer: {fileID: 11400000, guid: 1515249dbe72b464fb76ab04853bd559, type: 2}
+      _cameraIdentifierContainer: {fileID: 11400000, guid: 40aef1fca5258e942a594ce197fbd6b2, type: 2}
+      _spawnSystemIdentifierContainer: {fileID: 11400000, guid: b6cad3abea8e3eb4fa6d178bffdc1f45, type: 2}

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f934e261a75446eb7bd42e4aabf0c7c, type: 3}
+  m_Name: SpawnSystemDescription
+  m_EditorClassIdentifier: 
+  description:
+    _identifierContainer: {fileID: 11400000, guid: b6cad3abea8e3eb4fa6d178bffdc1f45, type: 2}
+    _pointDescriptions:
+    - _identifierContainer: {fileID: 11400000, guid: fbff24f66e5288749b0d882add5ea86b, type: 2}
+      PointType: 3
+      IsBlocked: 0
+      PointData:
+        Position: {x: 2, y: 0, z: 0}
+        Rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    - _identifierContainer: {fileID: 11400000, guid: b8aed96e270c27b43b17a99fdbd5e743, type: 2}
+      PointType: 1
+      IsBlocked: 0
+      PointData:
+        Position: {x: 0, y: 0, z: 0}
+        Rotation: {x: 0, y: 0, z: 0, w: 0}
+    - _identifierContainer: {fileID: 11400000, guid: 7d26012633ac6e44089c7586eebc8a8e, type: 2}
+      PointType: 2
+      IsBlocked: 0
+      PointData:
+        Position: {x: 0, y: 0, z: 0}
+        Rotation: {x: 0, y: 0, z: 0, w: 0}

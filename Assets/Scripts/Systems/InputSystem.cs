@@ -12,9 +12,9 @@ namespace DroneBase.Systems
 
         private Camera _camera;
 
-        public InputSystem(Camera camera)
+        public InputSystem(ICamera camera)
         {
-            _camera = camera;
+            _camera = camera.Camera;
             ServiceLocator.Get<UpdateLocalService>().RegisterUpdatable(this);
         }
         public Vector3 GetMousePosition()
@@ -32,8 +32,7 @@ namespace DroneBase.Systems
         {
             if (Input.GetMouseButtonDown(0))
             {
-                CustomDebug.Log("LeftMouseButton clicked");
-                LeftMouseButtonClickPoint?.Invoke(GetMousePoint());
+                LeftMouseButtonClickPoint?.Invoke(GetMouseRaycastPoint());
             }
         }
 
@@ -41,12 +40,11 @@ namespace DroneBase.Systems
         {
             if (Input.GetMouseButtonDown(1))
             {
-                CustomDebug.Log("RightMouseButton clicked");
-                RightMouseButtonClickPoint?.Invoke(GetMousePoint());
+                RightMouseButtonClickPoint?.Invoke(GetMouseRaycastPoint());
             }
         }
 
-        private Vector3 GetMousePoint()
+        private Vector3 GetMouseRaycastPoint()
         {
             Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out var hit);
             return hit.point;

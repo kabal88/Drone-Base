@@ -9,9 +9,11 @@ namespace DroneBase.Controllers
 {
     public class CameraController : ICameraController, IUpdatable, IDisposable
     {
-        private readonly IView _cameraView;
+        private readonly ICameraView _cameraView;
         private readonly ICameraModel _cameraModel;
-        private Direction _moveDirection;
+        private IMouseInput _mouseInput;
+
+        public ICamera Camera => _cameraView;
 
         private CameraController(ICameraView cameraView, ICameraModel cameraModel)
         {
@@ -23,32 +25,61 @@ namespace DroneBase.Controllers
             ICameraDescription description,
             SpawnPointData pointData)
         {
-            var view = GameObject.Instantiate(description.CameraPrefab, pointData.PointPosition, pointData.Rotation)
+            var view = GameObject.Instantiate(description.CameraPrefab, pointData.Position, pointData.Rotation)
                 .GetComponent<ICameraView>();
-            var camera = new CameraController(view, description.CameraModel);
+            var model = description.CameraModel;
+
+            model.SetPosition(pointData.Position);
+            model.SetRotation(pointData.Rotation);
+
+            var camera = new CameraController(view, model);
 
             ServiceLocator.Get<UpdateLocalService>().RegisterUpdatable(camera);
 
             return camera;
         }
 
-        public void Move(Direction direction)
+        public void InjectMouseInputSystem(IMouseInput mouseInput)
         {
-            _moveDirection = direction;
+            _mouseInput = mouseInput;
         }
 
         public void UpdateLocal(float deltaTime)
         {
-            MoveCameraPosition(deltaTime);
+            CheckMoveDirection(deltaTime);
         }
 
-        private void MoveCameraPosition(float deltaTime)
+        private void CheckMoveDirection(float deltaTime)
         {
-            var pos = _cameraModel.Position;
-            switch (_moveDirection)
+            var mousePos = _mouseInput.GetMousePosition();
+            if (mousePos.y >= _cameraModel.ScreenHeight * (1 - _cameraModel.BoarderThickness))
             {
-                case Direction.None:
-                    break;
+                MoveCameraPosition(Direction.Up, deltaTime);
+            }
+
+            if (mousePos.y <= _cameraModel.ScreenHeight * _cameraModel.BoarderThickness)
+            {
+                MoveCameraPosition(Direction.Down, deltaTime);
+            }
+
+            if (mousePos.x >= _cameraModel.ScreenWight * (1 - _cameraModel.BoarderThickness))
+            {
+                MoveCameraPosition(Direction.Right, deltaTime);
+            }
+
+            if (mousePos.x <= _cameraModel.ScreenWight * _cameraModel.BoarderThickness)
+            {
+                MoveCameraPosition(Direction.Left, deltaTime);
+            }
+        }
+
+        private void MoveCameraPosition(Direction direction, float deltaTime)
+        {
+            if (direction == Direction.None) return;
+
+            var pos = _cameraModel.Position;
+            switch (direction)
+            {
                 case Direction.Up:
                     pos.z += _cameraModel.Speed * deltaTime;
                     break;
@@ -64,6 +95,9 @@ namespace DroneBase.Controllers
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
+            pos.x = Mathf.Clamp(pos.x, -_cameraModel.MoveLimit.x, _cameraModel.MoveLimit.x);
+            pos.z = Mathf.Clamp(pos.z, -_cameraModel.MoveLimit.y, _cameraModel.MoveLimit.y);
 
             _cameraModel.SetPosition(pos);
             _cameraView.Transform.position = pos;

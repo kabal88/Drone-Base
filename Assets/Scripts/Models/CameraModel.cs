@@ -8,16 +8,25 @@ namespace DroneBase.Models
     {
         public float Speed { get; }
         public float RotationSpeed { get; }
+        public float BoarderThickness { get; }
+        public float ScreenHeight { get; }
+        public float ScreenWight { get; }
+        public Vector2 MoveLimit { get; }
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
         public Quaternion Rotation { get; private set; }
 
-        public CameraModel(MoveData moveData, RotationData rotationData)
+
+        public CameraModel(MoveData moveData, RotationData rotationData, float boarderThickness, Vector2 moveLimit)
         {
+            BoarderThickness = boarderThickness;
+            MoveLimit = moveLimit;
             Position = moveData.Position;
             RotationSpeed = rotationData.RotationSpeed;
             Speed = moveData.Speed;
             Rotation = Quaternion.Euler(rotationData.Rotation);
+            ScreenHeight = Screen.height;
+            ScreenWight = Screen.width;
         }
 
         public void SetPosition(Vector3 position)
@@ -29,7 +38,7 @@ namespace DroneBase.Models
         {
             Direction = direction;
         }
-        
+
         public void SetRotation(Quaternion rotation)
         {
             Rotation = rotation;

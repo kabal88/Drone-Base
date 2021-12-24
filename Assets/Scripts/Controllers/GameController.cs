@@ -10,8 +10,6 @@ namespace DroneBase.Controllers
 {
     public class GameController : IUpdatable, IFixUpdatable
     {
-        private List<IUnitController> _unitControllers;
-        private PlayerController _playerController;
         private readonly IGameModel _model;
 
         private GameController(IGameModel model)
@@ -30,13 +28,14 @@ namespace DroneBase.Controllers
         public void StartGame()
         {
             SetupServices();
-            var spawnSystem = new SpawnSystem();
+            var spawnSystem = SpawnSystem.CreateSpawnSystem(_model.Library.GetSpawnSystemDescription(_model.PresetData.SpawnSystemId));
 
             var camera = CameraController.CreateCameraController(
                 _model.Library.GetCameraDescription(_model.PresetData.CameraContainerId),
-                spawnSystem.GetSpawnPointsByPredicate(x => x.Model.PointType == EntityType.Camera).First().Model
-                    .PointData);
-           // _inputSystem = new InputSystem(_camera);
+                spawnSystem.GetSpawnPointsByPredicate(x => x.Model.PointType == EntityType.Camera)
+                    .First().Model.PointData);
+            var inputSystem = new InputSystem(camera.Camera);
+            camera.InjectMouseInputSystem(inputSystem);
             // _playerController = PlayerController.CreatePlayerController(
             //     _model.Library.GetPlayerDescription(_model.PresetData.PlayerContainerId),
             //     _inputSystem,
@@ -48,7 +47,7 @@ namespace DroneBase.Controllers
                 // new CameraController(new CameraView(), new CameraModel())
                 // );
 
-            _playerController.SetSelectedUnit(_unitControllers[0]);
+            //_playerController.SetSelectedUnit(_unitControllers[0]);
         }
 
         private void SetupServices()

@@ -31,7 +31,7 @@ namespace DroneBase.Controllers
         public static DroneController CreateDroneController(IDroneDescription description, SpawnPointData pointData)
         {
             var droneView =
-                Object.Instantiate(description.DronePrefab, pointData.PointPosition, pointData.Rotation).GetComponent<DroneView>();
+                Object.Instantiate(description.DronePrefab, pointData.Position, pointData.Rotation).GetComponent<DroneView>();
             var drone = new DroneController(description.DroneModel, droneView, new NavMeshMovingSystem(droneView.NavMeshAgent));
 
             return drone;

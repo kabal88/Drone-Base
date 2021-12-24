@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 661589fd5b4e4869a080f179e798a637, type: 3}
+  m_Name: CameraDescription
+  m_EditorClassIdentifier: 
+  description:
+    _identifierContainer: {fileID: 11400000, guid: 40aef1fca5258e942a594ce197fbd6b2, type: 2}
+    _cameraPrefab: {fileID: 5556658823493878162, guid: 28a656924ac66cb42be9682b3377580b, type: 3}
+    _boarderThickness: 0.05
+    _moveLimit: {x: 40, y: 40}
+    _moveData:
+      Position: {x: 0, y: 0, z: 0}
+      Speed: 20
+    _rotationData:
+      Rotation: {x: 0, y: 0, z: 0}
+      RotationSpeed: 20

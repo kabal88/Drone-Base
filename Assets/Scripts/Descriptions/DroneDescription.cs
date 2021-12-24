@@ -10,8 +10,8 @@ namespace DroneBase.Descriptions
     [Serializable]
     public class DroneDescription : IDroneDescription
     {
-        [SerializeField] private GameObject _dronePrefab;
         [SerializeField] private IdentifierContainer _identifierContainer;
+        [SerializeField] private GameObject _dronePrefab;
         [SerializeField] private MoveData _moveData;
         [SerializeField] private RotationData _rotationData;
 

@@ -4,6 +4,6 @@ namespace DroneBase.Interfaces
 {
     public interface ICameraController
     {
-        void Move(Direction direction);
+        ICamera Camera { get; }
     }
 }
