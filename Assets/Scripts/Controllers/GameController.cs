@@ -28,26 +28,30 @@ namespace DroneBase.Controllers
         public void StartGame()
         {
             SetupServices();
-            var spawnSystem = SpawnSystem.CreateSpawnSystem(_model.Library.GetSpawnSystemDescription(_model.PresetData.SpawnSystemId));
+            var spawnSystem =
+                SpawnSystem.CreateSpawnSystem(
+                    _model.Library.GetSpawnSystemDescription(_model.PresetData.SpawnSystemId));
 
             var camera = CameraController.CreateCameraController(
                 _model.Library.GetCameraDescription(_model.PresetData.CameraContainerId),
                 spawnSystem.GetSpawnPointsByPredicate(x => x.Model.PointType == EntityType.Camera)
                     .First().Model.PointData);
+            
             var inputSystem = new InputSystem(camera.Camera);
+            
             camera.InjectMouseInputSystem(inputSystem);
-            // _playerController = PlayerController.CreatePlayerController(
-            //     _model.Library.GetPlayerDescription(_model.PresetData.PlayerContainerId),
-            //     _inputSystem,
-            //     );
-                
-                // new PlayerController(
-                // _inputSystem,
-                // new PlayerModel(),
-                // new CameraController(new CameraView(), new CameraModel())
-                // );
+            
+            var playerController = PlayerController.CreatePlayerController(
+                _model.Library.GetPlayerDescription(_model.PresetData.PlayerContainerId),
+                inputSystem,
+                camera);
 
-            //_playerController.SetSelectedUnit(_unitControllers[0]);
+            var drone = DroneController.CreateDroneController(
+                _model.Library.GetDroneDescription(_model.PresetData.DroneContainerId),
+                spawnSystem.GetSpawnPointsByPredicate(x => x.Model.PointType == EntityType.Unit).First().Model
+                    .PointData);
+
+            playerController.SetSelectedUnit(drone);
         }
 
         private void SetupServices()

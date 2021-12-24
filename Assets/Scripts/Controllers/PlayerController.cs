@@ -24,7 +24,7 @@ namespace DroneBase.Controllers
         }
 
         public static PlayerController CreatePlayerController(
-            PlayerDescription description,
+            IPlayerDescription description,
             IInputSystem inputSystem,
             ICameraController cameraController)
         {
