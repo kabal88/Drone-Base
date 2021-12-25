@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DroneBase.Interfaces;
 
 namespace DroneBase.Services
 {
-    public class UpdateLocalService :IUpdatable
+    public sealed class UpdateLocalService :IUpdateService
     {
         private readonly List<IUpdatable> _updatables;
 
@@ -13,14 +14,25 @@ namespace DroneBase.Services
             _updatables = new List<IUpdatable>();
         }
 
-        public void RegisterUpdatable(IUpdatable updatable)
+        public void RegisterObject(IUpdatable updatable)
         {
             _updatables.Add(updatable);
         }
 
-        public void UnRegisterUpdatable(IUpdatable updatable)
+        public void UnRegisterObject(IUpdatable updatable)
         {
             _updatables.Remove(updatable);
+        }
+
+        public IEnumerable<IUpdatable> GetObjectByPredicate(Func<IUpdatable, bool> predicate)
+        {
+            return _updatables.Where(predicate);
+        }
+
+        public bool TryGetObject(out IUpdatable obj)
+        {
+            obj = _updatables.FirstOrDefault();
+            return obj != null;
         }
 
         public void UpdateLocal(float deltaTime)

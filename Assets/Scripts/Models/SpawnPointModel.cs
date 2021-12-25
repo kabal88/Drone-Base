@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DroneBase.Models
 {
-    public class SpawnPointModel : ISpawnPointModel
+    public sealed class SpawnPointModel : ISpawnPointModel
     {
         public bool IsBlocked { get; private set; }
         public Vector3 PointPosition { get;private set; }

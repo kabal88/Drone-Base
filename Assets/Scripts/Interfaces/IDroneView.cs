@@ -1,6 +1,6 @@
 ﻿namespace DroneBase.Interfaces
 {
-    public interface IDroneView: IView, INavMeshAgent
+    public interface IDroneView: IView, INavMeshAgent, ISelectable
     {
         
     }

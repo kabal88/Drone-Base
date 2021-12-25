@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DroneBase.Views
 {
-    public class CameraView : MonoBehaviour, ICameraView
+    public sealed class CameraView : MonoBehaviour, ICameraView
     {
         [SerializeField] private Camera _camera;
         

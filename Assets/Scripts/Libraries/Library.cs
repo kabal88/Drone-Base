@@ -10,7 +10,7 @@ using UnityEngine;
 namespace DroneBase.Libraries
 {
     [Serializable]
-    public class Library
+    public sealed class Library
     {
         [SerializeField] private List<Description> Descriptions = new List<Description>();
 

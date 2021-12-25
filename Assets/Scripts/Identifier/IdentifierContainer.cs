@@ -4,7 +4,7 @@ using UnityEngine;
 namespace DroneBase.Identifier
 {
     [CreateAssetMenu]
-    public class IdentifierContainer : ScriptableObject, IIdentifier
+    public sealed class IdentifierContainer : ScriptableObject, IIdentifier
     {
         [SerializeField, HideInInspector] private int ID;
     

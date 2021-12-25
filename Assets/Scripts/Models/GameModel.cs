@@ -4,7 +4,7 @@ using DroneBase.Libraries;
 
 namespace DroneBase.Models
 {
-    public class GameModel : IGameModel
+    public sealed class GameModel : IGameModel
     {
         public IUpdatable UpdateService { get; private set; }
         public IFixUpdatable FixUpdateService { get; private set; }

@@ -1,30 +1,43 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using DroneBase.Interfaces;
 
 namespace DroneBase.Services
 {
-    public class FixUpdateLocalService :IFixUpdatable
+    public sealed class FixUpdateLocalService :IFixUpdateService
     {
-        private readonly List<IFixUpdatable> _updatables;
+        private readonly List<IFixUpdatable> _fixUpdatables;
 
         public FixUpdateLocalService()
         {
-            _updatables = new List<IFixUpdatable>();
+            _fixUpdatables = new List<IFixUpdatable>();
         }
 
-        public void RegisterUpdatable(IFixUpdatable updatable)
+        public void RegisterObject(IFixUpdatable obj)
         {
-            _updatables.Add(updatable);
+            _fixUpdatables.Add(obj);
         }
 
-        public void UnRegisterUpdatable(IFixUpdatable updatable)
+        public void UnRegisterObject(IFixUpdatable obj)
         {
-            _updatables.Remove(updatable);
+            _fixUpdatables.Remove(obj);
         }
-        
+
+        public IEnumerable<IFixUpdatable> GetObjectByPredicate(Func<IFixUpdatable, bool> predicate)
+        {
+            return _fixUpdatables.Where(predicate);
+        }
+
+        public bool TryGetObject(out IFixUpdatable obj)
+        {
+            obj = _fixUpdatables.FirstOrDefault();
+            return obj != null;
+        }
+
         public void FixedUpdateLocal()
         {
-            foreach (var updatable in _updatables)
+            foreach (var updatable in _fixUpdatables)
             {
                 updatable.FixedUpdateLocal();
             }

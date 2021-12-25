@@ -8,7 +8,7 @@ using DroneBase.Systems;
 
 namespace DroneBase.Controllers
 {
-    public class GameController : IUpdatable, IFixUpdatable
+    public sealed class GameController : IUpdatable, IFixUpdatable
     {
         private readonly IGameModel _model;
 
@@ -43,26 +43,25 @@ namespace DroneBase.Controllers
             
             var playerController = PlayerController.CreatePlayerController(
                 _model.Library.GetPlayerDescription(_model.PresetData.PlayerContainerId),
-                inputSystem,
-                camera);
+                inputSystem);
 
             var drone = DroneController.CreateDroneController(
                 _model.Library.GetDroneDescription(_model.PresetData.DroneContainerId),
                 spawnSystem.GetSpawnPointsByPredicate(x => x.Model.PointType == EntityType.Unit).First().Model
                     .PointData);
-
-            playerController.SetSelectedUnit(drone);
         }
 
         private void SetupServices()
         {
             var updateService = new UpdateLocalService();
             _model.SetUpdateService(updateService);
-            ServiceLocator.SetService(updateService);
+            ServiceLocator.SetService<IUpdateService>(updateService);
 
             var fixUpdateService = new FixUpdateLocalService();
             _model.SetFixUpdateService(fixUpdateService);
-            ServiceLocator.SetService(fixUpdateService);
+            ServiceLocator.SetService<IFixUpdateService>(fixUpdateService);
+            
+            ServiceLocator.SetService<ISelectionService>(new SelectionService());
         }
 
         public void UpdateLocal(float deltaTime)

@@ -4,20 +4,23 @@ using UnityEngine;
 
 namespace DroneBase.Models
 {
-    public class CameraModel : ICameraModel
+    public sealed class CameraModel : ICameraModel
     {
         public float Speed { get; }
         public float RotationSpeed { get; }
         public float BoarderThickness { get; }
         public float ScreenHeight { get; }
         public float ScreenWight { get; }
+        public float ZoomInLimit { get; }
+        public float ZoomOutLimit { get; }
+        public float ZoomSpeed { get; }
         public Vector2 MoveLimit { get; }
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
         public Quaternion Rotation { get; private set; }
 
 
-        public CameraModel(MoveData moveData, RotationData rotationData, float boarderThickness, Vector2 moveLimit)
+        public CameraModel(MoveData moveData, RotationData rotationData, float boarderThickness, Vector2 moveLimit, ZoomData zoomData)
         {
             BoarderThickness = boarderThickness;
             MoveLimit = moveLimit;
@@ -27,6 +30,9 @@ namespace DroneBase.Models
             Rotation = Quaternion.Euler(rotationData.Rotation);
             ScreenHeight = Screen.height;
             ScreenWight = Screen.width;
+            ZoomInLimit = zoomData.ZoomInLimit;
+            ZoomOutLimit = zoomData.ZoomOutLimit;
+            ZoomSpeed = zoomData.ZoomSpeed;
         }
 
         public void SetPosition(Vector3 position)

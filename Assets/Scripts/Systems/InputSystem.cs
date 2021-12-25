@@ -1,11 +1,12 @@
 ﻿using System;
 using DroneBase.Interfaces;
+using DroneBase.Managers;
 using DroneBase.Services;
 using UnityEngine;
 
 namespace DroneBase.Systems
 {
-    public class InputSystem: IInputSystem, IUpdatable, IDisposable
+    public sealed class InputSystem: IInputSystem, IUpdatable, IDisposable
     {
         public event Action<Vector3> LeftMouseButtonClickPoint;
         public event Action<Vector3> RightMouseButtonClickPoint;
@@ -15,8 +16,11 @@ namespace DroneBase.Systems
         public InputSystem(ICamera camera)
         {
             _camera = camera.Camera;
-            ServiceLocator.Get<UpdateLocalService>().RegisterUpdatable(this);
+            ServiceLocator.Get<IUpdateService>().RegisterObject(this);
         }
+
+        public float Scroll => Input.GetAxis(TagManager.MOUSE_SCROLLWHEEL);
+
         public Vector3 GetMousePosition()
         {
             return Input.mousePosition;
@@ -52,7 +56,7 @@ namespace DroneBase.Systems
 
         public void Dispose()
         {
-            ServiceLocator.Get<UpdateLocalService>().UnRegisterUpdatable(this);
+            ServiceLocator.Get<IUpdateService>().UnRegisterObject(this);
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DroneBase.Views
 {
-    public class SpawnPointView : MonoBehaviour, ISpawnPointView
+    public sealed class SpawnPointView : MonoBehaviour, ISpawnPointView
     {
         [SerializeField] private IdentifierContainer _identifierContainer;
         public Transform Transform => transform;

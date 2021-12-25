@@ -8,7 +8,7 @@ using UnityEngine;
 namespace DroneBase.Descriptions
 {
     [Serializable]
-    public class DroneDescription : IDroneDescription
+    public sealed class DroneDescription : IDroneDescription
     {
         [SerializeField] private IdentifierContainer _identifierContainer;
         [SerializeField] private GameObject _dronePrefab;

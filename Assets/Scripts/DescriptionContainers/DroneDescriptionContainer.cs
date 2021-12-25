@@ -4,7 +4,7 @@ using UnityEngine;
 namespace DroneBase.DescriptionContainers
 {
     [CreateAssetMenu(fileName = "DroneDescription", menuName = "Descriptions/DroneDescription", order = 0)]
-    public class DroneDescriptionContainer : DescriptionContainer<DroneDescription>
+    public sealed class DroneDescriptionContainer : DescriptionContainer<DroneDescription>
     {
     }
 }

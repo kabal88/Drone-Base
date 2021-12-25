@@ -10,7 +10,7 @@ using UnityEngine;
 namespace DroneBase.Descriptions
 {
     [Serializable]
-    public class SpawnSystemDescription : ISpawnSystemDescription
+    public sealed class SpawnSystemDescription : ISpawnSystemDescription
     {
         [SerializeField] private IdentifierContainer _identifierContainer;
         [SerializeField] private List<SpawnPointDescription> _pointDescriptions = new List<SpawnPointDescription>();

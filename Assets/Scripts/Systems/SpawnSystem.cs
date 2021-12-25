@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace DroneBase.Systems
 {
-    public class SpawnSystem : ISpawnSystem
+    public sealed class SpawnSystem : ISpawnSystem
     {
         private List<ISpawnPointController> _pointControllers;
 

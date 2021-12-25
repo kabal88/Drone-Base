@@ -2,7 +2,7 @@
 
 namespace DroneBase.Controllers
 {
-    public class SpawnPointController : ISpawnPointController
+    public sealed class SpawnPointController : ISpawnPointController
     {
         public ISpawnPointModel Model { get; }
 

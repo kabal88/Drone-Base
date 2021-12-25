@@ -23,3 +23,7 @@ MonoBehaviour:
     _rotationData:
       Rotation: {x: 0, y: 0, z: 0}
       RotationSpeed: 20
+    _zoomData:
+      ZoomInLimit: -5
+      ZoomOutLimit: 20
+      ZoomSpeed: 500

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DroneBase.Models
 {
-    public class DroneModel: IDroneModel
+    public sealed class DroneModel: IDroneModel
     {
         public float Speed { get; }
         public float RotationSpeed { get; }
@@ -43,7 +43,7 @@ namespace DroneBase.Models
             Path = path;
         }
 
-        public void SetTarget(Vector3 target)
+        public void SetNavTarget(Vector3 target)
         {
             Target = target;
         }

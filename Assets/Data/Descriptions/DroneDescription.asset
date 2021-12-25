@@ -17,7 +17,7 @@ MonoBehaviour:
     _dronePrefab: {fileID: 2477832996751174652, guid: d5e002a56c7c51f44bb79e18391edff1, type: 3}
     _moveData:
       Position: {x: 0, y: 0, z: 0}
-      Speed: 0
+      Speed: 7
     _rotationData:
       Rotation: {x: 0, y: 0, z: 0}
-      RotationSpeed: 0
+      RotationSpeed: 140

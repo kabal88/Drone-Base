@@ -8,7 +8,7 @@ using UnityEngine;
 namespace DroneBase.Descriptions
 {
     [Serializable]
-    public class CameraDescription : ICameraDescription
+    public sealed class CameraDescription : ICameraDescription
     {
         [SerializeField] private IdentifierContainer _identifierContainer;
         [SerializeField] private GameObject _cameraPrefab;
@@ -16,9 +16,16 @@ namespace DroneBase.Descriptions
         [SerializeField] private Vector2 _moveLimit;
         [SerializeField] private MoveData _moveData;
         [SerializeField] private RotationData _rotationData;
+        [SerializeField] private ZoomData _zoomData;
 
         public int Id => _identifierContainer.Id;
         public GameObject CameraPrefab => _cameraPrefab;
-        public ICameraModel CameraModel => new CameraModel(_moveData, _rotationData, _boarderThickness, _moveLimit);
+
+        public ICameraModel CameraModel =>
+            new CameraModel(_moveData,
+                _rotationData,
+                _boarderThickness,
+                _moveLimit,
+                _zoomData);
     }
 }

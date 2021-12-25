@@ -2,13 +2,13 @@
 
 namespace DroneBase.Models
 {
-    public class PlayerModel : IPlayerModel
+    public sealed class PlayerModel : IPlayerModel
     {
-        public IUnitController SelectedUnit { get; private set; }
+        public ISelectable SelectedObject { get; private set; }
 
-        public void SetSelectedUnit(IUnitController unit)
+        public void SetSelectedObject(ISelectable unit)
         {
-            SelectedUnit = unit;
+            SelectedObject = unit;
         }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace DroneBase
 {
-    public class GameRoot : MonoBehaviour
+    public sealed class GameRoot : MonoBehaviour
     {
         [SerializeField] private IdentifierContainer _gameIdentifierContainer;
         [SerializeField] private Library _library = new Library();

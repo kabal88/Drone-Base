@@ -2,8 +2,7 @@
 
 namespace DroneBase.Interfaces
 {
-    public interface IUnitController
+    public interface IUnitController: INavigable, ISelectable
     {
-        void SetTarget(Vector3 target);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 namespace DroneBase.Systems
 {
-    public class NavMeshMovingSystem : IMoveSystem
+    public sealed class NavMeshMovingSystem : IMoveSystem
     {
         private NavMeshAgent _navMeshAgent;
 

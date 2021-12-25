@@ -7,7 +7,7 @@ using UnityEngine;
 namespace DroneBase.Descriptions
 {
     [Serializable]
-    public class PlayerDescription :IPlayerDescription
+    public sealed class PlayerDescription :IPlayerDescription
     {
         [SerializeField] private IdentifierContainer _identifierContainer;
         public int Id => _identifierContainer.Id;

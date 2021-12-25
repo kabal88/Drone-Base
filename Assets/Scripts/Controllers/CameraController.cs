@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace DroneBase.Controllers
 {
-    public class CameraController : ICameraController, IUpdatable, IDisposable
+    public sealed class CameraController : ICameraController, IUpdatable, IDisposable
     {
         private readonly ICameraView _cameraView;
         private readonly ICameraModel _cameraModel;
@@ -34,7 +34,7 @@ namespace DroneBase.Controllers
 
             var camera = new CameraController(view, model);
 
-            ServiceLocator.Get<UpdateLocalService>().RegisterUpdatable(camera);
+            ServiceLocator.Get<IUpdateService>().RegisterObject(camera);
 
             return camera;
         }
@@ -47,6 +47,22 @@ namespace DroneBase.Controllers
         public void UpdateLocal(float deltaTime)
         {
             CheckMoveDirection(deltaTime);
+            Zoom(deltaTime);
+        }
+
+        private void Zoom(float deltaTime)
+        {
+            var scroll = _mouseInput.Scroll;
+            if (scroll==0) return;
+
+            var pos = _cameraModel.Position;
+
+            pos.y -= scroll * _cameraModel.ZoomSpeed * deltaTime;
+
+            pos.y = Mathf.Clamp(pos.y, _cameraModel.ZoomInLimit, _cameraModel.ZoomOutLimit);
+            
+            _cameraModel.SetPosition(pos);
+            _cameraView.Transform.position = pos;
         }
 
         private void CheckMoveDirection(float deltaTime)
@@ -105,7 +121,7 @@ namespace DroneBase.Controllers
 
         public void Dispose()
         {
-            ServiceLocator.Get<UpdateLocalService>().UnRegisterUpdatable(this);
+            ServiceLocator.Get<IUpdateService>().UnRegisterObject(this);
         }
     }
 }

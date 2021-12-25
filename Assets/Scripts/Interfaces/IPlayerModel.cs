@@ -4,8 +4,8 @@ namespace DroneBase.Interfaces
 {
     public interface IPlayerModel
     {
-        IUnitController SelectedUnit { get; }
+        ISelectable SelectedObject { get; }
 
-        void SetSelectedUnit(IUnitController unit);
+        void SetSelectedObject(ISelectable unit);
     }
 }
