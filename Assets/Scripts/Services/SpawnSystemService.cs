@@ -10,16 +10,16 @@ using UnityEngine;
 
 namespace DroneBase.Systems
 {
-    public sealed class SpawnSystem : ISpawnSystem
+    public sealed class SpawnSystemService : ISpawnSystemService
     {
         private List<ISpawnPointController> _pointControllers;
 
-        private SpawnSystem(List<ISpawnPointController> pointControllers)
+        private SpawnSystemService(List<ISpawnPointController> pointControllers)
         {
             _pointControllers = pointControllers;
         }
 
-        public static SpawnSystem CreateSpawnSystem(ISpawnSystemDescription description)
+        public static SpawnSystemService CreateSpawnSystem(ISpawnSystemDescription description)
         {
             var points = GameObject.FindGameObjectsWithTag(TagManager.SPAWN_POINT);
             var pointControllers = new List<ISpawnPointController>();
@@ -34,7 +34,7 @@ namespace DroneBase.Systems
                 }
             }
 
-            return new SpawnSystem(pointControllers);
+            return new SpawnSystemService(pointControllers);
         }
 
         public IEnumerable<ISpawnPointController> GetSpawnPointsByPredicate(Func<ISpawnPointController, bool> predicate)

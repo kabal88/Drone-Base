@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DroneBase.Interfaces
 {
-    public interface ISpawnSystem
+    public interface ISpawnSystemService
     {
         IEnumerable<ISpawnPointController> GetSpawnPointsByPredicate(Func<ISpawnPointController, bool> predicate);
     }

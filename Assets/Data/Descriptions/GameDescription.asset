@@ -19,3 +19,6 @@ MonoBehaviour:
       _droneIdentifierContainer: {fileID: 11400000, guid: 1515249dbe72b464fb76ab04853bd559, type: 2}
       _cameraIdentifierContainer: {fileID: 11400000, guid: 40aef1fca5258e942a594ce197fbd6b2, type: 2}
       _spawnSystemIdentifierContainer: {fileID: 11400000, guid: b6cad3abea8e3eb4fa6d178bffdc1f45, type: 2}
+      _DronesPresetList:
+      - _identifierContainer: {fileID: 11400000, guid: 1515249dbe72b464fb76ab04853bd559, type: 2}
+        _quantity: 3
