@@ -2,7 +2,7 @@
 
 namespace DroneBase.Interfaces
 {
-    public interface IUnitController: INavigable, ISelectable
+    public interface IUnitController: INavigable, ISelectable, IEntityType
     {
     }
 }

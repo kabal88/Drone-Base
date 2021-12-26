@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description:
     _identifierContainer: {fileID: 11400000, guid: 1515249dbe72b464fb76ab04853bd559, type: 2}
+    _type: 1
     _dronePrefab: {fileID: 2477832996751174652, guid: d5e002a56c7c51f44bb79e18391edff1, type: 3}
     _moveData:
       Position: {x: 0, y: 0, z: 0}

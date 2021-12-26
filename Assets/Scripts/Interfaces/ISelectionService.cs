@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace DroneBase.Interfaces
 {
-    public interface ISelectionService : IRepository<ISelectable>, ISelectable
+    public interface ISelectionService : IRepository<ISelectable>
     {
+        event Action<ISelectable> Selected;
+
+        void ClearAllSelection();
     }
 }

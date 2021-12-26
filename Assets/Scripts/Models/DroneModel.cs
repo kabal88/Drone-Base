@@ -1,4 +1,5 @@
 ﻿using DroneBase.Data;
+using DroneBase.Enums;
 using DroneBase.Interfaces;
 using UnityEngine;
 
@@ -13,16 +14,19 @@ namespace DroneBase.Models
         public Vector3[] Path { get;private set; }
         public Vector3 Target { get;private set; }
         public Quaternion Rotation { get;private set; }
-        
-        public DroneModel(MoveData moveData, RotationData rotationData)
+
+        public EntityType Type { get; }
+
+        public DroneModel(MoveData moveData, RotationData rotationData, EntityType type)
         {
+            Type = type;
             Speed = moveData.Speed;
             Position = moveData.Position;
             RotationSpeed = rotationData.RotationSpeed;
             Rotation = Quaternion.Euler(rotationData.Rotation);
         }
-        
-        
+
+
         public void SetPosition(Vector3 position)
         {
             Position = position;

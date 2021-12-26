@@ -2,9 +2,8 @@
 
 namespace DroneBase.Interfaces
 {
-    public interface IDroneDescription : IDescription
+    public interface IDroneDescription : IUnitDescription<IDroneModel>
     {
-        GameObject DronePrefab { get; }
-        IDroneModel DroneModel { get; }
+
     }
 }

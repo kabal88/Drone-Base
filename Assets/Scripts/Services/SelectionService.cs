@@ -33,13 +33,8 @@ namespace DroneBase.Services
             selectable = _selectables.FirstOrDefault();
             return selectable != null;
         }
-
-        public void SetSelection()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ClearSelection()
+        
+        public void ClearAllSelection()
         {
             foreach (var selectable in _selectables)
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using DroneBase.Data;
+using DroneBase.Enums;
 using DroneBase.Interfaces;
 using DroneBase.Services;
 using DroneBase.Systems;
@@ -16,6 +17,8 @@ namespace DroneBase.Controllers
         private IDroneView _droneView;
         private IMoveSystem _moveSystem;
         private IAbilitiesSystem _abilitiesSystem;
+
+        public EntityType Type => _droneModel.Type;
 
         private DroneController(
             IDroneModel model,
@@ -34,8 +37,9 @@ namespace DroneBase.Controllers
         public static DroneController CreateDroneController(IDroneDescription description, SpawnPointData pointData)
         {
             var droneView =
-                GameObject.Instantiate(description.DronePrefab, pointData.Position, pointData.Rotation).GetComponent<DroneView>();
-            var drone = new DroneController(description.DroneModel, droneView, new NavMeshMovingSystem(droneView.NavMeshAgent));
+                GameObject.Instantiate(description.Prefab, pointData.Position, pointData.Rotation).GetComponent<IDroneView>();
+            
+            var drone = new DroneController(description.Model as IDroneModel, droneView, new NavMeshMovingSystem(droneView.NavMeshAgent));
             
             ServiceLocator.Get<ISelectionService>().RegisterObject(drone);
             return drone;
@@ -70,5 +74,7 @@ namespace DroneBase.Controllers
             _droneView.Selected -= OnViewSelected;
             ServiceLocator.Get<ISelectionService>().UnRegisterObject(this);
         }
+
+        
     }
 }

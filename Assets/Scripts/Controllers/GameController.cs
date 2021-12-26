@@ -35,16 +35,22 @@ namespace DroneBase.Controllers
                 _model.Library.GetCameraDescription(_model.PresetData.CameraContainerId),
                 spawnSystem.GetSpawnPointsByPredicate(x => x.Model.PointType == EntityType.Camera)
                     .First().Model.PointData);
-            
+
             var inputSystem = new InputSystem(camera.Camera);
-            
+
             camera.InjectMouseInputSystem(inputSystem);
-            
+
             var playerController = PlayerController.CreatePlayerController(
                 _model.Library.GetPlayerDescription(_model.PresetData.PlayerContainerId),
                 inputSystem);
 
             CreateDrones(_model.PresetData.DronesPresetList);
+
+            var factory = FactoryController.CreateFactoryController(
+                _model.Library.GetBuildingDescription<IFactoryDescription, IFactoryModel>(_model.PresetData
+                    .FactoryContainerId),
+                spawnSystem.GetSpawnPointsByPredicate(x => x.Model.PointType == EntityType.Building).First().Model
+                    .PointData);
         }
 
         private void SetupServices()
@@ -56,9 +62,9 @@ namespace DroneBase.Controllers
             var fixUpdateService = new FixUpdateLocalService();
             _model.SetFixUpdateService(fixUpdateService);
             ServiceLocator.SetService<IFixUpdateService>(fixUpdateService);
-            
+
             ServiceLocator.SetService<ISelectionService>(new SelectionService());
-            
+
             ServiceLocator.SetService<ISpawnSystemService>(SpawnSystemService.CreateSpawnSystem(
                 _model.Library.GetSpawnSystemDescription(_model.PresetData.SpawnSystemId)));
         }
@@ -66,13 +72,13 @@ namespace DroneBase.Controllers
         private void CreateDrones(IEnumerable<EntityPresetData> presets)
         {
             var spawnSystem = ServiceLocator.Get<ISpawnSystemService>();
-            
+
             foreach (var preset in presets)
             {
                 for (int i = 0; i < preset.Quantity; i++)
                 {
                     DroneController.CreateDroneController(
-                        _model.Library.GetDroneDescription(preset.ContainerId),
+                        _model.Library.GetUnitDescription<IDroneDescription, IDroneModel>(preset.ContainerId),
                         spawnSystem.GetSpawnPointsByPredicate(x => x.Model.PointType == EntityType.Unit).First().Model
                             .PointData);
                 }

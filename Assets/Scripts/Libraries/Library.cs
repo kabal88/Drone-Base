@@ -14,54 +14,35 @@ namespace DroneBase.Libraries
     {
         [SerializeField] private List<Description> Descriptions = new List<Description>();
 
-        private Dictionary<int, IDroneDescription> _droneDescriptions = new Dictionary<int, IDroneDescription>();
+        private Dictionary<int, IUnitDescription<IUnitModel>> _unitDescriptions =
+            new Dictionary<int, IUnitDescription<IUnitModel>>();
+
         private Dictionary<int, IPlayerDescription> _playerDescriptions = new Dictionary<int, IPlayerDescription>();
         private Dictionary<int, ICameraDescription> _cameraDescriptions = new Dictionary<int, ICameraDescription>();
         private Dictionary<int, IGameDescription> _gameDescriptions = new Dictionary<int, IGameDescription>();
-        private Dictionary<int, ISpawnSystemDescription> _spawnSystemDescriptions = new Dictionary<int, ISpawnSystemDescription>();
+
+        private Dictionary<int, ISpawnSystemDescription> _spawnSystemDescriptions =
+            new Dictionary<int, ISpawnSystemDescription>();
+
+        private Dictionary<int, IBuildingDescription<IBuildingModel>> _buildingDescriptions =
+            new Dictionary<int, IBuildingDescription<IBuildingModel>>();
 
         public void Init()
         {
             foreach (var description in Descriptions)
             {
-                if (description.GetDescription is IDroneDescription data )
-                {
-                    _droneDescriptions.Add(description.GetDescription.Id,data);
-                }
+                if (description.GetDescription is IUnitDescription<IUnitModel> data)
+                    _unitDescriptions.Add(description.GetDescription.Id, data);
+                else if (description.GetDescription is IPlayerDescription player)
+                    _playerDescriptions.Add(description.GetDescription.Id, player);
+                else if (description.GetDescription is ICameraDescription camera)
+                    _cameraDescriptions.Add(description.GetDescription.Id, camera);
+                else if (description.GetDescription is IGameDescription game)
+                    _gameDescriptions.Add(description.GetDescription.Id, game);
+                else if (description.GetDescription is ISpawnSystemDescription spawn)
+                    _spawnSystemDescriptions.Add(description.GetDescription.Id, spawn);
+                else if (description.GetDescription is IBuildingDescription<IBuildingModel> building) _buildingDescriptions.Add(description.GetDescription.Id, building);
             }
-            
-            foreach (var description in Descriptions)
-            {
-                if (description.GetDescription is IPlayerDescription data )
-                {
-                    _playerDescriptions.Add(description.GetDescription.Id,data);
-                }
-            }
-            
-            foreach (var description in Descriptions)
-            {
-                if (description.GetDescription is ICameraDescription data )
-                {
-                    _cameraDescriptions.Add(description.GetDescription.Id,data);
-                }
-            }
-            
-            foreach (var description in Descriptions)
-            {
-                if (description.GetDescription is IGameDescription data )
-                {
-                    _gameDescriptions.Add(description.GetDescription.Id,data);
-                }
-            }
-
-            foreach (var description in Descriptions)
-            {
-                if (description.GetDescription is ISpawnSystemDescription data)
-                {
-                    _spawnSystemDescriptions.Add(description.GetDescription.Id,data);
-                }
-            }
-            
         }
 
         public void LoadAllAssets()
@@ -71,13 +52,13 @@ namespace DroneBase.Libraries
                 .Select(AssetDatabase.LoadAssetAtPath<Description>).ToList();
         }
 
-        public IDroneDescription GetDroneDescription(int id)
+        public T GetUnitDescription<T, TM>(int id) where T : IUnitDescription<TM> where TM : IUnitModel
         {
-            if (_droneDescriptions.TryGetValue(id, out var needed))
+            if (_unitDescriptions.TryGetValue(id, out var needed))
             {
-                return needed;
+                return (T)needed;
             }
-        
+
             throw new Exception($"drone desc. with id {id} not found");
         }
 
@@ -87,7 +68,7 @@ namespace DroneBase.Libraries
             {
                 return needed;
             }
-        
+
             throw new Exception($"player desc. with id {id} not found");
         }
 
@@ -119,6 +100,16 @@ namespace DroneBase.Libraries
             }
 
             throw new Exception($"SpawnSystem desc. with id {id} not found");
+        }
+
+        public T GetBuildingDescription<T, TM>(int id) where T : IBuildingDescription<TM> where TM : IBuildingModel
+        {
+            if (_buildingDescriptions.TryGetValue(id, out var needed))
+            {
+                return (T)needed;
+            }
+
+            throw new Exception($"Building desc. with id {id} not found");
         }
     }
 }

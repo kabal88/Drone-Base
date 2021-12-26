@@ -2,7 +2,7 @@
 
 namespace DroneBase.Interfaces
 {
-    public interface ISelectable
+    public interface ISelectable : IEntityType
     {
         event Action<ISelectable> Selected;
 

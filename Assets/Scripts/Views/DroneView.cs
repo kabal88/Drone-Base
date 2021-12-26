@@ -1,4 +1,5 @@
 ﻿using System;
+using DroneBase.Enums;
 using DroneBase.Interfaces;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,6 +16,8 @@ namespace DroneBase.Views
 
         public Transform Transform => transform;
         public NavMeshAgent NavMeshAgent => _navMeshAgent;
+        public EntityType Type => EntityType.Unit;
+
         public void SetSelection()
         {
             _selectSpriteRenderer.enabled = true;
