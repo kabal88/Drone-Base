@@ -4,7 +4,7 @@ namespace DroneBase.Interfaces
 {
     public interface ISelectionService : IRepository<ISelectable>
     {
-        event Action<ISelectable> Selected;
+        event Action<ISelect> Selected;
 
         void ClearAllSelection();
     }

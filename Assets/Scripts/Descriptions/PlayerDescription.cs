@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DroneBase.Identifier;
 using DroneBase.Interfaces;
 using DroneBase.Models;
@@ -11,6 +12,6 @@ namespace DroneBase.Descriptions
     {
         [SerializeField] private IdentifierContainer _identifierContainer;
         public int Id => _identifierContainer.Id;
-        public IPlayerModel PlayerModel => new PlayerModel();
+        public IPlayerModel PlayerModel => new PlayerModel(new List<IUnitController>());
     }
 }

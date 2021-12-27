@@ -4,9 +4,7 @@ namespace DroneBase.Interfaces
 {
     public interface ISelectable : IEntityType
     {
-        event Action<ISelectable> Selected;
-
-        void SetSelection();
-        void ClearSelection();
+        event Action<ISelect> Selected;
+        public ISelect GetSelect { get; }
     }
 }

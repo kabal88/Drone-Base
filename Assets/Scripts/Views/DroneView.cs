@@ -1,4 +1,5 @@
 ﻿using System;
+using DroneBase.Animations;
 using DroneBase.Enums;
 using DroneBase.Interfaces;
 using UnityEngine;
@@ -8,24 +9,31 @@ namespace DroneBase.Views
 {
     public sealed class DroneView : MonoBehaviour, IDroneView
     {
-        public event Action<ISelectable> Selected;
+        public event Action<ISelect> Selected;
         
         [SerializeField] private NavMeshAgent _navMeshAgent;
-        [SerializeField] private SpriteRenderer _selectSpriteRenderer;
-        
+        [SerializeField] private SelectSpriteAnimator _animator;
+
 
         public Transform Transform => transform;
         public NavMeshAgent NavMeshAgent => _navMeshAgent;
-        public EntityType Type => EntityType.Unit;
+        public EntityType Type { get; private set; }
+        public ISelect GetSelect => this;
+    
 
         public void SetSelection()
         {
-            _selectSpriteRenderer.enabled = true;
+            _animator.ShowSelectedAnimation();
         }
 
         public void ClearSelection()
         {
-            _selectSpriteRenderer.enabled = false;
+            _animator.HideSelectAnimation();
+        }
+
+        public void SetEntityType(EntityType type)
+        {
+            Type = type;
         }
 
         private void OnMouseDown()

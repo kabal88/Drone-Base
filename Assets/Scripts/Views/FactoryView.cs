@@ -1,26 +1,56 @@
 ﻿using System;
+using DroneBase.Animations;
+using DroneBase.Data;
 using DroneBase.Enums;
 using DroneBase.Interfaces;
 using UnityEngine;
 
 namespace DroneBase.Views
 {
-    public class FactoryView: MonoBehaviour, IFactoryView
+    public sealed class FactoryView: MonoBehaviour, IFactoryView
 
     {
-        public Transform Transform { get; }
-        public EntityType Type { get; }
-        public event Action<ISelectable> Selected;
+        public event Action<ISelect> Selected;
+        public event Action<ITarget> Targeted;
+
+        [SerializeField] private SelectSpriteAnimator _animator;
+
+        private ITarget _target;
+        
+        public Transform Transform => transform;
+        public EntityType Type { get; private set; }
+        public ISelect GetSelect => this;
+        public ITarget GetTarget => _target;
+        public TargetData TargetData => _target.TargetData;
+
+        public void SetEntityType(EntityType type)
+        {
+            Type = type;
+        }
+
+        public void SetTarget(ITarget target)
+        {
+            _target = target;
+        }
+
         public void SetSelection()
         {
-            throw new NotImplementedException();
+            _animator.ShowSelectedAnimation();
         }
 
         public void ClearSelection()
         {
-            throw new NotImplementedException();
+            _animator.HideSelectAnimation();
         }
 
-        public event Action<ITargetable> Targeted;
+        private void OnMouseDown()
+        {
+            OnSelected(this);
+        }
+
+        private void OnSelected(ISelect obj)
+        {
+            Selected?.Invoke(obj);
+        }
     }
 }

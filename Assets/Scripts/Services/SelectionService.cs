@@ -7,7 +7,7 @@ namespace DroneBase.Services
 {
     public sealed class SelectionService : ISelectionService
     {
-        public event Action<ISelectable> Selected;
+        public event Action<ISelect> Selected;
         
         private List<ISelectable> _selectables = new List<ISelectable>();
 
@@ -38,11 +38,11 @@ namespace DroneBase.Services
         {
             foreach (var selectable in _selectables)
             {
-                selectable.ClearSelection();
+                selectable.GetSelect.ClearSelection();
             }
         }
 
-        private void OnSelected(ISelectable selectable)
+        private void OnSelected(ISelect selectable)
         {
             Selected?.Invoke(selectable);
         }

@@ -1,11 +1,14 @@
-using DroneBase.Interfaces;
+using System.Collections.Generic;
 
 namespace DroneBase.Interfaces
 {
     public interface IPlayerModel
     {
-        ISelectable SelectedObject { get; }
+        ISelect SelectedObject { get; }
+        IEnumerable<IUnitController> AllUnits { get; }
 
-        void SetSelectedObject(ISelectable unit);
+        void SetSelectedObject(ISelect unit);
+        void AddUnit(IUnitController unit);
+        void RemoveUnit(IUnitController unit);
     }
 }

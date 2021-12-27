@@ -2,8 +2,9 @@
 
 namespace DroneBase.Interfaces
 {
-    public interface ITargetable
+    public interface ITargetable: IEntityType
     {
-        event Action<ITargetable> Targeted;
+        event Action<ITarget> Targeted;
+        public ITarget GetTarget { get; }
     }
 }

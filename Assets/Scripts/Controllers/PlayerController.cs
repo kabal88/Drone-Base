@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using DroneBase.Data;
+using DroneBase.Enums;
 using DroneBase.Interfaces;
 using DroneBase.Services;
-using UnityEngine;
+using Sirenix.Utilities;
 
 namespace DroneBase.Controllers
 {
@@ -17,31 +20,47 @@ namespace DroneBase.Controllers
         {
             _inputSystem = inputSystem;
             _playerModel = playerModel;
-            _inputSystem.RightMouseButtonClickPoint += SetNavTarget;
+            _inputSystem.RightMouseButtonClick += SetTarget;
         }
 
         public static PlayerController CreatePlayerController(
             IPlayerDescription description,
-            IInputSystem inputSystem)
+            IInputSystem inputSystem, List<IUnitController> units = default)
         {
+            var model = description.PlayerModel;
+
+            if (!units.IsNullOrEmpty())
+            {
+                foreach (var unit in units)
+                {
+                    model.AddUnit(unit);
+                }
+            }
+
             var player = new PlayerController(description.PlayerModel, inputSystem);
             ServiceLocator.Get<ISelectionService>().Selected += player.OnSelected;
             return player;
         }
 
-        private void OnSelected(ISelectable obj)
+        private void OnSelected(ISelect obj)
         {
             _playerModel.SelectedObject?.ClearSelection();
-            
+
             _playerModel.SetSelectedObject(obj);
             obj.SetSelection();
         }
 
-        private void SetNavTarget(Vector3 target)
+        private void SetTarget(CustomRaycastHit hit)
         {
-            if (_playerModel.SelectedObject is INavigable navigable)
+            if (!(_playerModel.SelectedObject is IAimable aimable)) return;
+            
+            if (hit.Targetable == null)
             {
-                navigable.SetNavTarget(target);
+                aimable.SetTarget(hit.Point);
+            }
+            else
+            {
+                aimable.SetTarget(hit.Targetable.GetTarget);
             }
         }
 
@@ -53,7 +72,7 @@ namespace DroneBase.Controllers
         public void Dispose()
         {
             ServiceLocator.Get<ISelectionService>().Selected -= OnSelected;
-            _inputSystem.RightMouseButtonClickPoint -= SetNavTarget;
+            _inputSystem.RightMouseButtonClick -= SetTarget;
         }
     }
 }

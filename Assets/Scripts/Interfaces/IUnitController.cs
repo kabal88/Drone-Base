@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using DroneBase.Data;
+using UnityEngine;
 
 namespace DroneBase.Interfaces
 {
-    public interface IUnitController: INavigable, ISelectable, IEntityType
+    public interface IUnitController: IAimable, ISelectable, ISelect, IUnitContext
     {
+        public Vector3? PreviousTarget { get; }
+        void SetState(IUnitState state);
     }
 }

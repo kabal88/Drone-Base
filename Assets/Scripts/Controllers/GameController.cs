@@ -40,12 +40,12 @@ namespace DroneBase.Controllers
 
             camera.InjectMouseInputSystem(inputSystem);
 
+            var units = CreateDrones(_model.PresetData.DronesPresetList);
+            
             var playerController = PlayerController.CreatePlayerController(
                 _model.Library.GetPlayerDescription(_model.PresetData.PlayerContainerId),
-                inputSystem);
-
-            CreateDrones(_model.PresetData.DronesPresetList);
-
+                inputSystem, units);
+            
             var factory = FactoryController.CreateFactoryController(
                 _model.Library.GetBuildingDescription<IFactoryDescription, IFactoryModel>(_model.PresetData
                     .FactoryContainerId),
@@ -69,20 +69,25 @@ namespace DroneBase.Controllers
                 _model.Library.GetSpawnSystemDescription(_model.PresetData.SpawnSystemId)));
         }
 
-        private void CreateDrones(IEnumerable<EntityPresetData> presets)
+        private List<IUnitController> CreateDrones(IEnumerable<EntityPresetData> presets)
         {
             var spawnSystem = ServiceLocator.Get<ISpawnSystemService>();
-
+            var result = new List<IUnitController>();
             foreach (var preset in presets)
             {
                 for (int i = 0; i < preset.Quantity; i++)
                 {
-                    DroneController.CreateDroneController(
-                        _model.Library.GetUnitDescription<IDroneDescription, IDroneModel>(preset.ContainerId),
-                        spawnSystem.GetSpawnPointsByPredicate(x => x.Model.PointType == EntityType.Unit).First().Model
-                            .PointData);
+                    result.Add(
+                        DroneController.CreateDroneController(
+                            _model.Library.GetUnitDescription<IDroneDescription, IDroneModel>(preset.ContainerId),
+                            spawnSystem.GetSpawnPointsByPredicate(x => x.Model.PointType == EntityType.Unit).First()
+                                .Model
+                                .PointData)
+                        );
                 }
             }
+
+            return result;
         }
 
         public void UpdateLocal(float deltaTime)

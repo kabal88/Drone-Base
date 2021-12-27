@@ -1,4 +1,5 @@
 ﻿using System;
+using DroneBase.Data;
 using DroneBase.Interfaces;
 using DroneBase.Managers;
 using DroneBase.Services;
@@ -8,8 +9,8 @@ namespace DroneBase.Systems
 {
     public sealed class InputSystem: IInputSystem, IUpdatable, IDisposable
     {
-        public event Action<Vector3> LeftMouseButtonClickPoint;
-        public event Action<Vector3> RightMouseButtonClickPoint;
+        public event Action<CustomRaycastHit> LeftMouseButtonClick;
+        public event Action<CustomRaycastHit> RightMouseButtonClick;
 
         private Camera _camera;
 
@@ -36,7 +37,7 @@ namespace DroneBase.Systems
         {
             if (Input.GetMouseButtonDown(0))
             {
-                LeftMouseButtonClickPoint?.Invoke(GetMouseRaycastPoint());
+                LeftMouseButtonClick?.Invoke(GetMouseCustomRaycast());
             }
         }
 
@@ -44,14 +45,14 @@ namespace DroneBase.Systems
         {
             if (Input.GetMouseButtonDown(1))
             {
-                RightMouseButtonClickPoint?.Invoke(GetMouseRaycastPoint());
+                RightMouseButtonClick?.Invoke(GetMouseCustomRaycast());
             }
         }
 
-        private Vector3 GetMouseRaycastPoint()
+        private CustomRaycastHit GetMouseCustomRaycast()
         {
             Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out var hit);
-            return hit.point;
+            return new CustomRaycastHit(hit);
         }
 
         public void Dispose()
