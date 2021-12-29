@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace DroneBase.Interfaces
 {
-    public interface IUnitState : IState<IUnitController>
+    public interface IUnitState : IState<IUnitController>, IFixUpdatable
     {
-        void SetTarget(ITarget target, IUnitModel model);
-        void SetTarget(Vector3 point, IUnitModel model);
-        void SetSelection(IUnitView view);
-        void ClearSelection(IUnitView view);
+        void SetTarget(TargetData data, IUnitModel model);
+        void SetSelection(ISelectionView view);
+        void ClearSelection(ISelectionView view);
         void OnViewSelected(ISelect obj, Action<ISelect> callback);
+        void OnSensorCollide(Collider other);
     }
 }

@@ -12,7 +12,7 @@ namespace DroneBase.Models
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
         public Vector3? PreviousTarget { get; private set; }
-        public Vector3 CurrentTarget { get; private set; }
+        public TargetData CurrentTargetData { get; private set; }
         public Quaternion Rotation { get; private set; }
         public EntityType Type { get; }
 
@@ -25,11 +25,11 @@ namespace DroneBase.Models
             Rotation = Quaternion.Euler(rotationData.Rotation);
             PreviousTarget = null;
         }
-
-        public void SetTarget(Vector3 target)
+        
+        public void SetTargetData(TargetData data)
         {
-            PreviousTarget = CurrentTarget;
-            CurrentTarget = target;
+            PreviousTarget = CurrentTargetData.Point;
+            CurrentTargetData = data;
         }
 
         public void SetPosition(Vector3 position)

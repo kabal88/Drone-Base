@@ -4,12 +4,13 @@ using UnityEngine;
 
 namespace DroneBase.Data
 {
-    public struct CustomRaycastHit
+    public readonly struct CustomRaycastHit
     {
+        public bool HasTargetable { get; }
+        public bool HasSelectable { get; }
         public Vector3 Point { get; }
         public EntityType Type { get; }
         public ITargetable Targetable { get; }
-        
         public ISelectable Selectable { get; }
 
         public CustomRaycastHit(RaycastHit hit)
@@ -18,14 +19,16 @@ namespace DroneBase.Data
             Type = EntityType.None;
             Targetable = null;
             Selectable = null;
-            
-            if (hit.collider.TryGetComponent<ISelectable>(out var selectable))
+
+            HasSelectable = hit.collider.TryGetComponent<ISelectable>(out var selectable);
+            if (HasSelectable)
             {
                 Selectable = selectable;
                 Type = selectable.Type;
             }
-            
-            if (hit.collider.TryGetComponent<ITargetable>(out var target))
+
+            HasTargetable = hit.collider.TryGetComponent<ITargetable>(out var target);
+            if (HasTargetable)
             {
                 Targetable = target;
                 Type = target.Type;

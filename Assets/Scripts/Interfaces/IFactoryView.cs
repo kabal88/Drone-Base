@@ -1,9 +1,6 @@
-﻿using DroneBase.Enums;
-
-namespace DroneBase.Interfaces
+﻿namespace DroneBase.Interfaces
 {
-    public interface IFactoryView : IBuildingView, IInteractive
+    public interface IFactoryView : IBuildingView<IFactoryController, IFactoryModel>, IInteractive, IResourceReceiver
     {
-        
     }
 }

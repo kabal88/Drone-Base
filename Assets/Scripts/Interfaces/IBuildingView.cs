@@ -2,9 +2,8 @@
 
 namespace DroneBase.Interfaces
 {
-    public interface IBuildingView: IView, ISelectable, ITargetable, ISelect, ITarget
+    public interface IBuildingView<T,TM> : IView, ITargetable, ISelectionView where T: IBuildingController where TM : IBuildingModel
     {
-        void SetEntityType(EntityType type);
-        void SetTarget(ITarget target);
+        void Init(T controller,TM model);
     }
 }

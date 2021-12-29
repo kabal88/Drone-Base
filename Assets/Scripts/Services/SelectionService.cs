@@ -34,14 +34,6 @@ namespace DroneBase.Services
             return selectable != null;
         }
         
-        public void ClearAllSelection()
-        {
-            foreach (var selectable in _selectables)
-            {
-                selectable.GetSelect.ClearSelection();
-            }
-        }
-
         private void OnSelected(ISelect selectable)
         {
             Selected?.Invoke(selectable);

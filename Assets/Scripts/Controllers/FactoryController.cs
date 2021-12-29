@@ -10,7 +10,6 @@ namespace DroneBase.Controllers
     public sealed class FactoryController : IFactoryController, IDisposable
     {
         public event Action<ISelect> Selected;
-        public event Action<ITarget> Targeted;
 
         private IFactoryModel _model;
         private IFactoryView _view;
@@ -18,7 +17,7 @@ namespace DroneBase.Controllers
         public ITarget GetTarget => this;
         public ISelect GetSelect => this;
         public EntityType Type => _model.Type;
-        public TargetData TargetData => new TargetData(_model.Position);
+        public TargetData TargetData => _model.GetTargetData;
 
         private FactoryController(IFactoryModel model, IFactoryView view)
         {
@@ -39,27 +38,27 @@ namespace DroneBase.Controllers
             model.SetInteractivePoint(view.InteractivePoint);
 
             var factory = new FactoryController(model, view);
-
+            view.Init(factory, model);
+            
             ServiceLocator.Get<ISelectionService>().RegisterObject(factory);
             view.Selected += factory.OnSelected;
-            view.SetTarget(factory);
 
             return factory;
         }
 
         public void SetSelection()
         {
-            _view.SetSelection();
+            _view.PlaySelectionAnimation();
         }
 
         public void ClearSelection()
         {
-            _view.ClearSelection();
+            _view.StopSelectionAnimation();
         }
 
-        private void OnSelected(ISelect obj)
+        private void OnSelected()
         {
-            Selected?.Invoke(obj);
+            Selected?.Invoke(this);
         }
 
         public void Dispose()

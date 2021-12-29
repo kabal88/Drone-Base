@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using DroneBase.Controllers;
-using DroneBase.Data;
 using DroneBase.Interfaces;
 using DroneBase.Managers;
-using DroneBase.Views;
 using UnityEngine;
 
 namespace DroneBase.Systems

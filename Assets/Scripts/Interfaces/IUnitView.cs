@@ -1,9 +1,6 @@
-﻿using DroneBase.Enums;
-
-namespace DroneBase.Interfaces
+﻿namespace DroneBase.Interfaces
 {
-    public interface IUnitView:IView, INavMeshAgent, ISelectable, ISelect
+    public interface IUnitView : IView, INavMeshAgent, ISelectionView
     {
-        void SetEntityType(EntityType type);
     }
 }

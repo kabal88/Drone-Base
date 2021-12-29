@@ -26,27 +26,33 @@ namespace DroneBase.States
             throw new NotImplementedException();
         }
 
-        public override void SetTarget(ITarget target, IUnitModel model)
+        public override void SetTarget(TargetData target, IUnitModel model)
+        {
+            throw new NotImplementedException();
+        }
+        
+
+        public override void SetSelection(ISelectionView view)
         {
             throw new NotImplementedException();
         }
 
-        public override void SetTarget(Vector3 point, IUnitModel model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void SetSelection(IUnitView view)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void ClearSelection(IUnitView view)
+        public override void ClearSelection(ISelectionView view)
         {
             throw new NotImplementedException();
         }
 
         public override void OnViewSelected(ISelect obj, Action<ISelect> callback)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void OnSensorCollide(Collider other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void FixedUpdateLocal()
         {
             throw new NotImplementedException();
         }

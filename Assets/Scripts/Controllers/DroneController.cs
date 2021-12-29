@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace DroneBase.Controllers
 {
-    public sealed class DroneController : IUnitController, IDisposable
+    public sealed class DroneController : IDroneController, IDisposable
     {
         public event Action<ISelect> Selected;
 
@@ -23,6 +23,7 @@ namespace DroneBase.Controllers
         public ISelect GetSelect => this;
         public Vector3? PreviousTarget => _droneModel.PreviousTarget;
         public IMoveSystem MoveSystem => _moveSystem;
+        public IUnitModel Model => _droneModel;
 
         private DroneController(
             IDroneModel model,
@@ -40,30 +41,29 @@ namespace DroneBase.Controllers
 
         public static DroneController CreateDroneController(IDroneDescription description, SpawnPointData pointData)
         {
-            var droneView =
+            var view =
                 GameObject.Instantiate(description.Prefab, pointData.Position, pointData.Rotation)
                     .GetComponent<IDroneView>();
-
-            droneView.SetEntityType(description.Model.Type);
-
-            var drone = new DroneController(description.Model, droneView,
-                new NavMeshMovingSystem(droneView.NavMeshAgent));
-
+            
+            var model = description.Model;
+            
+            view.SetNavMeshSettings(model.Speed, model.RotationSpeed);
+            
+            var drone = new DroneController(model, view,
+                new NavMeshMovingSystem(view.NavMeshAgent));
+            
             ServiceLocator.Get<ISelectionService>().RegisterObject(drone);
-            drone.SetState(new DroneNormalState(drone));
+            view.SensorCollide += drone.OnSensorCollide;
+            
+            drone.SetState(new DroneIdleState(drone));
             return drone;
         }
 
-        public void SetTarget(ITarget target)
+        public void SetTarget(TargetData target)
         {
             _unitState.SetTarget(target,_droneModel);
         }
-
-        public void SetTarget(Vector3 point)
-        {
-            _unitState.SetTarget(point,_droneModel);
-        }
-
+        
         public void SetSelection()
         {
             _unitState.SetSelection(_droneView);
@@ -80,14 +80,21 @@ namespace DroneBase.Controllers
             _unitState.EnterState();
         }
 
-        private void OnViewSelected(ISelect obj)
+        private void OnViewSelected()
         {
             _unitState.OnViewSelected(this,Selected);
+        }
+
+        private void OnSensorCollide(Collider collider)
+        {
+            CustomDebug.Log($"sensor find: {collider.name}");
+            _unitState.OnSensorCollide(collider);
         }
 
         public void Dispose()
         {
             _droneView.Selected -= OnViewSelected;
+            _droneView.SensorCollide -= OnSensorCollide;
             ServiceLocator.Get<ISelectionService>().UnRegisterObject(this);
         }
     }

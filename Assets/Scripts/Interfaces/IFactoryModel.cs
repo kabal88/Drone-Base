@@ -1,6 +1,9 @@
-﻿namespace DroneBase.Interfaces
+﻿using DroneBase.Data;
+
+namespace DroneBase.Interfaces
 {
-    public interface IFactoryModel : IBuildingModel, IInteractive
+    public interface IFactoryModel : IBuildingModel, IInteractive, IResourceStorage
     {
+        public TargetData GetTargetData { get; }
     }
 }

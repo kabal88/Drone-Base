@@ -35,10 +35,10 @@ namespace DroneBase.Systems
 
         private void CheckLeftMouseButton()
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                LeftMouseButtonClick?.Invoke(GetMouseCustomRaycast());
-            }
+            // if (Input.GetMouseButtonDown(0))
+            // {
+            //     LeftMouseButtonClick?.Invoke(GetMouseCustomRaycast());
+            // }
         }
 
         private void CheckRightMouseButton()

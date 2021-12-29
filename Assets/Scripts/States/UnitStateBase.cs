@@ -17,11 +17,11 @@ namespace DroneBase.States
         public abstract void EnterState();
         public abstract void Execute();
         public abstract void ExitState();
-        public abstract void SetTarget(ITarget target, IUnitModel model);
-        public abstract void SetTarget(Vector3 point, IUnitModel model);
-        public abstract void SetSelection(IUnitView view);
-        public abstract void ClearSelection(IUnitView view);
+        public abstract void SetTarget(TargetData target, IUnitModel model);
+        public abstract void SetSelection(ISelectionView view);
+        public abstract void ClearSelection(ISelectionView view);
         public abstract void OnViewSelected(ISelect obj, Action<ISelect> callback);
-
+        public abstract void OnSensorCollide(Collider other);
+        public abstract void FixedUpdateLocal();
     }
 }

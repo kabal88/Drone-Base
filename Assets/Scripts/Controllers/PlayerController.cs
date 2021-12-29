@@ -53,15 +53,10 @@ namespace DroneBase.Controllers
         private void SetTarget(CustomRaycastHit hit)
         {
             if (!(_playerModel.SelectedObject is IAimable aimable)) return;
-            
-            if (hit.Targetable == null)
-            {
-                aimable.SetTarget(hit.Point);
-            }
-            else
-            {
-                aimable.SetTarget(hit.Targetable.GetTarget);
-            }
+
+            aimable.SetTarget(hit.HasTargetable
+                ? hit.Targetable.GetTarget.TargetData
+                : new TargetData(hit.Point, EntityType.None));
         }
 
         public void SetSelectedUnit(IUnitController selected)

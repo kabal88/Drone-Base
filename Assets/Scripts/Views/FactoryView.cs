@@ -7,57 +7,56 @@ using UnityEngine;
 
 namespace DroneBase.Views
 {
-    public sealed class FactoryView: MonoBehaviour, IFactoryView
-
+    public sealed class FactoryView : MonoBehaviour, IFactoryView
     {
-        public event Action<ISelect> Selected;
-        public event Action<ITarget> Targeted;
+        public event Action Selected;
+        public event Action<ResourcesContainer> ResourcesReceived;
 
         [SerializeField] private SelectSpriteAnimator _animator;
         [SerializeField] private Transform _actionAreaTransform;
 
-        private ITarget _target;
-        
-        public Transform Transform => transform;
-        public EntityType Type { get; private set; }
-        public ISelect GetSelect => this;
-        public ITarget GetTarget => _target;
-        public TargetData TargetData => _target.TargetData;
+        private IFactoryModel _model;
+        private IFactoryController _controller;
+
         public Vector3 InteractivePoint => _actionAreaTransform.position;
+        public EntityType Type => _model.Type;
+        public ITarget GetTarget => _controller;
+        public Transform Transform => transform;
 
-        public void SetEntityType(EntityType type)
+        public void Init(IFactoryController controller, IFactoryModel model)
         {
-            Type = type;
+            _model = model;
+            _controller = controller;
         }
 
-        public void SetTarget(ITarget target)
-        {
-            _target = target;
-        }
-
-        public void SetSelection()
+        public void PlaySelectionAnimation()
         {
             _animator.ShowSelectedAnimation();
         }
 
-        public void ClearSelection()
+        public void StopSelectionAnimation()
         {
             _animator.HideSelectAnimation();
         }
 
         private void OnMouseDown()
         {
-            OnSelected(this);
+            Selected?.Invoke();
         }
-
-        private void OnSelected(ISelect obj)
-        {
-            Selected?.Invoke(obj);
-        }
-
+        
         public void SetInteractivePoint(Vector3 point)
         {
             _actionAreaTransform.position = point;
+        }
+        
+        public void TakeResources(ResourcesContainer container)
+        {
+            OnResourcesReceived(container);
+        }
+
+        private void OnResourcesReceived(ResourcesContainer container)
+        {
+            ResourcesReceived?.Invoke(container);
         }
     }
 }

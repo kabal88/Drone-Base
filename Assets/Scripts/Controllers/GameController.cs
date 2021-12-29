@@ -41,7 +41,7 @@ namespace DroneBase.Controllers
             camera.InjectMouseInputSystem(inputSystem);
 
             var units = CreateDrones(_model.PresetData.UnitsPresets);
-            
+
             var playerController = PlayerController.CreatePlayerController(
                 _model.Library.GetPlayerDescription(_model.PresetData.PlayerContainerId),
                 inputSystem, units);
@@ -73,19 +73,21 @@ namespace DroneBase.Controllers
             {
                 for (int i = 0; i < preset.Quantity; i++)
                 {
-                    result.Add(
-                        DroneController.CreateDroneController(
-                            _model.Library.GetUnitDescription<IDroneDescription, IDroneModel>(preset.ContainerId),
-                            spawnSystem.GetSpawnPointsByPredicate(x => x.Model.PointType == EntityType.Unit).First()
-                                .Model
-                                .PointData)
-                        );
+                    var pointModel = spawnSystem.GetSpawnPointsByPredicate(x =>
+                            x.Model.PointType == EntityType.Unit && x.Model.IsBlocked != true)
+                        .First()
+                        .Model;
+                    result.Add(DroneController.CreateDroneController(
+                        _model.Library.GetUnitDescription<IDroneDescription, IDroneModel>(preset.ContainerId),
+                        pointModel.PointData)
+                    );
+                    pointModel.SetIsBlocked(true);
                 }
             }
 
             return result;
         }
-        
+
         private List<IBuildingController> CreateBuildings(IEnumerable<EntityPresetData> presets)
         {
             var spawnSystem = ServiceLocator.Get<ISpawnSystemService>();
@@ -94,12 +96,19 @@ namespace DroneBase.Controllers
             {
                 for (int i = 0; i < preset.Quantity; i++)
                 {
-                    result.Add( FactoryController.CreateFactoryController(
-                            _model.Library.GetBuildingDescription<IFactoryDescription, IFactoryModel>(preset.ContainerId),
-                            spawnSystem.GetSpawnPointsByPredicate(x => x.Model.PointType == EntityType.Unit).First()
-                                .Model
-                                .PointData)
-                        );
+                    var pointModel = spawnSystem
+                        .GetSpawnPointsByPredicate(x =>
+                            x.Model.PointType == EntityType.Building && x.Model.IsBlocked != true).First()
+                        .Model;
+
+                    result.Add(FactoryController.CreateFactoryController(
+                            _model.Library.GetBuildingDescription<IFactoryDescription, IFactoryModel>(
+                                preset.ContainerId),
+                            pointModel.PointData
+                        )
+                    );
+                    
+                    pointModel.SetIsBlocked(true);
                 }
             }
 

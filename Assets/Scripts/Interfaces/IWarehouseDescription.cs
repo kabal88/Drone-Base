@@ -1,6 +1,6 @@
 ﻿namespace DroneBase.Interfaces
 {
-    public interface IWarehouseDescription : IBuildingDescription<IFactoryModel>
+    public interface IWarehouseDescription : IBuildingDescription<IWarehouseModel>
     {
     }
 }
