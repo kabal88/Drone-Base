@@ -10,6 +10,7 @@ namespace DroneBase.Controllers
     public sealed class FactoryController : IFactoryController, IDisposable
     {
         public event Action<ISelect> Selected;
+        public event Action<ResourcesContainer> ResourcesReceived;
 
         private IFactoryModel _model;
         private IFactoryView _view;
@@ -65,6 +66,11 @@ namespace DroneBase.Controllers
         {
             ServiceLocator.Get<ISelectionService>().UnRegisterObject(this);
             _view.Selected -= OnSelected;
+        }
+        
+        public void TakeResources(ResourcesContainer container)
+        {
+            _model.AddResource(container);
         }
     }
 }

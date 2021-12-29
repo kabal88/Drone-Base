@@ -9,19 +9,19 @@ namespace DroneBase.Views
     public class WarehouseView : MonoBehaviour, IWarehouseView
     {
         public event Action Selected;
-        public event Action<IResourceReceiver> AskedForResources;
+        public event Action<IResourceReceiver, int> AskedForResources;
 
         [SerializeField] private SelectSpriteAnimator _animator;
         [SerializeField] private Transform _actionAreaTransform;
-        
+
         private IWarehouseController _controller;
         private IWarehouseModel _model;
-        
+
         public Vector3 InteractivePoint => _actionAreaTransform.position;
         public EntityType Type => _model.Type;
         public ITarget GetTarget => _controller;
         public Transform Transform => transform;
-        
+
         public void Init(IWarehouseController controller, IWarehouseModel model)
         {
             _controller = controller;
@@ -42,10 +42,10 @@ namespace DroneBase.Views
         {
             _actionAreaTransform.position = point;
         }
-        
-        public void AskForResources(IResourceReceiver receiver)
+
+        public void AskForResources(IResourceReceiver receiver, int qty)
         {
-            AskedForResources?.Invoke(receiver);
+            AskedForResources?.Invoke(receiver, qty);
         }
     }
 }

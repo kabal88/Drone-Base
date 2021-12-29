@@ -1,6 +1,6 @@
 ﻿namespace DroneBase.Interfaces
 {
-    public interface IFactoryController : IBuildingController
+    public interface IFactoryController : IBuildingController , IResourceReceiver
     {
     }
 }

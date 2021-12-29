@@ -79,7 +79,7 @@ namespace DroneBase.Controllers
                         .Model;
                     result.Add(DroneController.CreateDroneController(
                         _model.Library.GetUnitDescription<IDroneDescription, IDroneModel>(preset.ContainerId),
-                        pointModel.PointData)
+                        pointModel.PointData, _model.Library)
                     );
                     pointModel.SetIsBlocked(true);
                 }

@@ -15,6 +15,7 @@ namespace DroneBase.Models
         public TargetData CurrentTargetData { get; private set; }
         public Quaternion Rotation { get; private set; }
         public EntityType Type { get; }
+        public ResourcesContainer Container { get; private set; }
 
         public DroneModel(MoveData moveData, RotationData rotationData, EntityType type)
         {
@@ -45,6 +46,11 @@ namespace DroneBase.Models
         public void SetRotation(Quaternion rotation)
         {
             Rotation = rotation;
+        }
+        
+        public void SetResourcesContainer(ResourcesContainer container)
+        {
+            Container = container;
         }
     }
 }

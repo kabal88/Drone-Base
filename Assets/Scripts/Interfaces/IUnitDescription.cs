@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using DroneBase.Enums;
+using UnityEngine;
 
 namespace DroneBase.Interfaces
 {
@@ -6,5 +8,6 @@ namespace DroneBase.Interfaces
     {
         GameObject Prefab { get; }
         T Model { get; }
+        Dictionary<DroneAbility,int> AvailableAbilitiesMap { get; }
     }
 }

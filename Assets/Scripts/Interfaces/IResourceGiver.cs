@@ -4,6 +4,6 @@ namespace DroneBase.Interfaces
 {
     public interface IResourceGiver
     {
-        void AskForResources(IResourceReceiver receiver);
+        void AskForResources(IResourceReceiver receiver, int quantity);
     }
 }

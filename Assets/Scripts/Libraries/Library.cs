@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DroneBase.Controllers;
 using DroneBase.Descriptions;
 using DroneBase.Interfaces;
 using UnityEditor;
@@ -27,22 +26,36 @@ namespace DroneBase.Libraries
         private Dictionary<int, IBuildingDescription<IBuildingModel>> _buildingDescriptions =
             new Dictionary<int, IBuildingDescription<IBuildingModel>>();
 
+        private Dictionary<int, IAbilityDescription> _abilityDescriptions = new Dictionary<int, IAbilityDescription>();
+
         public void Init()
         {
             foreach (var description in Descriptions)
             {
-                if (description.GetDescription is IUnitDescription<IUnitModel> data)
-                    _unitDescriptions.Add(description.GetDescription.Id, data);
-                else if (description.GetDescription is IPlayerDescription player)
-                    _playerDescriptions.Add(description.GetDescription.Id, player);
-                else if (description.GetDescription is ICameraDescription camera)
-                    _cameraDescriptions.Add(description.GetDescription.Id, camera);
-                else if (description.GetDescription is IGameDescription game)
-                    _gameDescriptions.Add(description.GetDescription.Id, game);
-                else if (description.GetDescription is ISpawnSystemDescription spawn)
-                    _spawnSystemDescriptions.Add(description.GetDescription.Id, spawn);
-                else if (description.GetDescription is IBuildingDescription<IBuildingModel> building)
-                    _buildingDescriptions.Add(description.GetDescription.Id, building);
+                switch (description.GetDescription)
+                {
+                    case IUnitDescription<IUnitModel> data:
+                        _unitDescriptions.Add(description.GetDescription.Id, data);
+                        break;
+                    case IPlayerDescription player:
+                        _playerDescriptions.Add(description.GetDescription.Id, player);
+                        break;
+                    case ICameraDescription camera:
+                        _cameraDescriptions.Add(description.GetDescription.Id, camera);
+                        break;
+                    case IGameDescription game:
+                        _gameDescriptions.Add(description.GetDescription.Id, game);
+                        break;
+                    case ISpawnSystemDescription spawn:
+                        _spawnSystemDescriptions.Add(description.GetDescription.Id, spawn);
+                        break;
+                    case IBuildingDescription<IBuildingModel> building:
+                        _buildingDescriptions.Add(description.GetDescription.Id, building);
+                        break;
+                    case IAbilityDescription ability:
+                        _abilityDescriptions.Add(description.GetDescription.Id,ability);
+                        break;
+                }
             }
         }
 
@@ -53,11 +66,11 @@ namespace DroneBase.Libraries
                 .Select(AssetDatabase.LoadAssetAtPath<Description>).ToList();
         }
 
-        public T GetUnitDescription<T, TM>(int id) where T : IUnitDescription<TM> where TM : IUnitModel
+        public TDescription GetUnitDescription<TDescription, TModel>(int id) where TDescription : IUnitDescription<TModel> where TModel : IUnitModel
         {
             if (_unitDescriptions.TryGetValue(id, out var needed))
             {
-                return (T)needed;
+                return (TDescription)needed;
             }
 
             throw new Exception($"drone desc. with id {id} not found");
@@ -103,14 +116,24 @@ namespace DroneBase.Libraries
             throw new Exception($"SpawnSystem desc. with id {id} not found");
         }
 
-        public T GetBuildingDescription<T, TM>(int id) where T : IBuildingDescription<TM> where TM : IBuildingModel
+        public TDescription GetBuildingDescription<TDescription, TModel>(int id) where TDescription : IBuildingDescription<TModel> where TModel : IBuildingModel
         {
             if (_buildingDescriptions.TryGetValue(id, out var needed))
             {
-                return (T)needed;
+                return (TDescription)needed;
             }
 
             throw new Exception($"Building desc. with id {id} not found");
+        }
+
+        public IAbilityDescription GetAbilityDescription(int id)
+        {
+            if (_abilityDescriptions.TryGetValue(id, out var needed))
+            {
+                return needed;
+            }
+
+            throw new Exception($"Ability desc. with id {id} not found");
         }
     }
 }

@@ -46,7 +46,7 @@ namespace DroneBase.Models
         {
             InteractivePoint = point;
         }
-
+        
         public void AddResource(ResourcesContainer container)
         {
             if (_resourceStorage.ContainsKey(container.Type))
@@ -59,9 +59,31 @@ namespace DroneBase.Models
             }
         }
 
-        public int GetQuantityOfResource(ResourceType type)
+        public bool TryGetResource(ResourcesContainer container, out int qty)
         {
-            return _resourceStorage.ContainsKey(type) ? _resourceStorage[type] : 0;
+            var result = false;
+            qty = 0;
+            if (_resourceStorage.TryGetValue(container.Type, out var storageQuantity))
+            {
+                if (storageQuantity >= container.Quantity)
+                {
+                    storageQuantity -= container.Quantity;
+                    qty = container.Quantity;
+                    result = true;
+                }
+                else if (storageQuantity >= 0)
+                {
+                    qty = storageQuantity;
+                    storageQuantity = 0;
+                }
+            }
+
+            return result;
+        }
+
+        public bool TryGetQuantityOfResource(ResourceType type, out int qty)
+        {
+            return _resourceStorage.TryGetValue(type, out qty);
         }
     }
 }

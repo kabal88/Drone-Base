@@ -22,3 +22,6 @@ MonoBehaviour:
     _rotationData:
       Rotation: {x: 0, y: 0, z: 0}
       RotationSpeed: 140
+    _availableAbilitiesData:
+    - Ability: 0
+      IdentifierContainer: {fileID: 0}

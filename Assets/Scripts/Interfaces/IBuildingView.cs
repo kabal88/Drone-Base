@@ -1,9 +1,7 @@
-﻿using DroneBase.Enums;
-
-namespace DroneBase.Interfaces
+﻿namespace DroneBase.Interfaces
 {
-    public interface IBuildingView<T,TM> : IView, ITargetable, ISelectionView where T: IBuildingController where TM : IBuildingModel
+    public interface IBuildingView<TController,TModel> : IView, ITargetable, ISelectionView where TController: IBuildingController where TModel : IBuildingModel
     {
-        void Init(T controller,TM model);
+        void Init(TController controller,TModel model);
     }
 }

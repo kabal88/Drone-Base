@@ -1,6 +1,6 @@
 ﻿namespace DroneBase.Interfaces
 {
-    public interface IWarehouseController : IBuildingController
+    public interface IWarehouseController : IBuildingController, IResourceGiver
     {
     }
 }

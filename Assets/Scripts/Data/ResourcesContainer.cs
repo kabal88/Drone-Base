@@ -4,7 +4,7 @@ using DroneBase.Enums;
 namespace DroneBase.Data
 {
     [Serializable]
-    public readonly struct ResourcesContainer
+    public struct ResourcesContainer
     {
         public int Quantity { get; }
         public ResourceType Type { get; }

@@ -47,10 +47,12 @@ namespace DroneBase.Controllers
             return warehouse;
         }
 
-        private void OnAskedForResources(IResourceReceiver receiver)
+        private void OnAskedForResources(IResourceReceiver receiver,int qty)
         {
-           var resource = _model.AddResource()
-            receiver.TakeResources(_model.ad);
+            if (_model.TryGetResource(new ResourcesContainer(qty,_model.StorageResourceType), out qty))
+            {
+                receiver.TakeResources(new ResourcesContainer(qty,_model.StorageResourceType));
+            }
         }
 
         public void SetSelection()
@@ -72,6 +74,12 @@ namespace DroneBase.Controllers
         {
             ServiceLocator.Get<ISelectionService>().UnRegisterObject(this);
             _view.Selected -= OnSelected;
+            _view.AskedForResources -= OnAskedForResources;
+        }
+
+        public void AskForResources(IResourceReceiver receiver, int quantity)
+        {
+            OnAskedForResources(receiver, quantity);
         }
     }
 }
