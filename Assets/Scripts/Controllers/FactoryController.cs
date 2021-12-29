@@ -36,6 +36,7 @@ namespace DroneBase.Controllers
 
             model.SetPosition(view.Transform.position);
             model.SetRotation(view.Transform.rotation);
+            model.SetInteractivePoint(view.InteractivePoint);
 
             var factory = new FactoryController(model, view);
 

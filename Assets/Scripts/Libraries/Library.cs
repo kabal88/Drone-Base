@@ -41,7 +41,8 @@ namespace DroneBase.Libraries
                     _gameDescriptions.Add(description.GetDescription.Id, game);
                 else if (description.GetDescription is ISpawnSystemDescription spawn)
                     _spawnSystemDescriptions.Add(description.GetDescription.Id, spawn);
-                else if (description.GetDescription is IBuildingDescription<IBuildingModel> building) _buildingDescriptions.Add(description.GetDescription.Id, building);
+                else if (description.GetDescription is IBuildingDescription<IBuildingModel> building)
+                    _buildingDescriptions.Add(description.GetDescription.Id, building);
             }
         }
 

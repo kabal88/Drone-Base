@@ -11,14 +11,14 @@ namespace DroneBase.Data
        [SerializeField] private IdentifierContainer _playerIdentifierContainer;
        [SerializeField] private IdentifierContainer _cameraIdentifierContainer;
        [SerializeField] private IdentifierContainer _spawnSystemIdentifierContainer;
-       [SerializeField] private IdentifierContainer _factoryIdentifierContainer;
-       [SerializeField] private List<EntityPresetData> _DronesPresetList;
+       [SerializeField] private List<EntityPresetData> _buildingsPresetList;
+       [SerializeField] private List<EntityPresetData> _unitsPresetList;
 
        public int PlayerContainerId => _playerIdentifierContainer.Id;
-       public int FactoryContainerId => _factoryIdentifierContainer.Id;
        public int CameraContainerId => _cameraIdentifierContainer.Id;
        public int SpawnSystemId => _spawnSystemIdentifierContainer.Id;
 
-       public IEnumerable<EntityPresetData> DronesPresetList => _DronesPresetList;
+       public IEnumerable<EntityPresetData> UnitsPresets => _unitsPresetList;
+       public IEnumerable<EntityPresetData> BuildingsPresets => _buildingsPresetList;
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace DroneBase.Interfaces
 {
-    public interface IFactoryModel : IBuildingModel
+    public interface IFactoryModel : IBuildingModel, IInteractive
     {
     }
 }

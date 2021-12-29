@@ -14,6 +14,7 @@ namespace DroneBase.Views
         public event Action<ITarget> Targeted;
 
         [SerializeField] private SelectSpriteAnimator _animator;
+        [SerializeField] private Transform _actionAreaTransform;
 
         private ITarget _target;
         
@@ -22,6 +23,7 @@ namespace DroneBase.Views
         public ISelect GetSelect => this;
         public ITarget GetTarget => _target;
         public TargetData TargetData => _target.TargetData;
+        public Vector3 InteractivePoint => _actionAreaTransform.position;
 
         public void SetEntityType(EntityType type)
         {
@@ -51,6 +53,11 @@ namespace DroneBase.Views
         private void OnSelected(ISelect obj)
         {
             Selected?.Invoke(obj);
+        }
+
+        public void SetInteractivePoint(Vector3 point)
+        {
+            _actionAreaTransform.position = point;
         }
     }
 }

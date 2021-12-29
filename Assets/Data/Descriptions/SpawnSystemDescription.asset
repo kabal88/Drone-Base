@@ -39,3 +39,9 @@ MonoBehaviour:
       PointData:
         Position: {x: 0, y: 0, z: 0}
         Rotation: {x: 0, y: 0, z: 0, w: 0}
+    - _identifierContainer: {fileID: 11400000, guid: 5bad8e60c4b14874ca263ba98236e429, type: 2}
+      PointType: 1
+      IsBlocked: 0
+      PointData:
+        Position: {x: 0, y: 0, z: 0}
+        Rotation: {x: 0, y: 0, z: 0, w: 0}

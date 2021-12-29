@@ -8,11 +8,11 @@ namespace DroneBase.Data
     [Serializable]
     public struct SpawnPointDescription
     {
-       [SerializeField] private IdentifierContainer _identifierContainer;
-       
+        [SerializeField] private IdentifierContainer _identifierContainer;
+
         public EntityType PointType;
         public bool IsBlocked;
-        public SpawnPointData PointData;
+        [HideInInspector] public SpawnPointData PointData;
 
         public int Id => _identifierContainer.Id;
     }
