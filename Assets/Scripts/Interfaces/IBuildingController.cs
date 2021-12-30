@@ -1,7 +1,8 @@
-﻿namespace DroneBase.Interfaces
+﻿using DroneBase.Data;
+
+namespace DroneBase.Interfaces
 {
-    public interface IBuildingController : ISelectable, ITargetable, ISelect, ITarget
+    public interface IBuildingController : ISelectable, ITargetable, ISelect, ITarget, IIdentifier
     {
-        
     }
 }

@@ -16,5 +16,6 @@ MonoBehaviour:
     _identifierContainer: {fileID: 11400000, guid: b822d181bdfb5e44abc4403e273edd43, type: 2}
     _type: 2
     _factoryPrefab: {fileID: 5460890720184062143, guid: e4b9bf2c434a29741979f6b8bb3feab9, type: 3}
-    _resourceType: 1
-    _quantity: 200
+    _resourceStorage:
+      _type: 1
+      _quantity: 200

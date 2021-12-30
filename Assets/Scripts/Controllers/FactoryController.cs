@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace DroneBase.Controllers
 {
-    public sealed class FactoryController : IFactoryController, IDisposable
+    public class FactoryController : IFactoryController, IDisposable
     {
         public event Action<ISelect> Selected;
         public event Action<ResourcesContainer> ResourcesReceived;
@@ -15,6 +15,7 @@ namespace DroneBase.Controllers
         private IFactoryModel _model;
         private IFactoryView _view;
 
+        public int Id => _model.Id;
         public ITarget GetTarget => this;
         public ISelect GetSelect => this;
         public EntityType Type => _model.Type;
@@ -31,7 +32,7 @@ namespace DroneBase.Controllers
         {
             var view = GameObject.Instantiate(description.Prefab, pointData.Position, pointData.Rotation)
                 .GetComponent<IFactoryView>();
-
+            var id = view.GetHashCode();
             var model = description.BuildingModel;
 
             model.SetPosition(view.Transform.position);
@@ -40,7 +41,7 @@ namespace DroneBase.Controllers
 
             var factory = new FactoryController(model, view);
             view.Init(factory, model);
-            
+
             ServiceLocator.Get<ISelectionService>().RegisterObject(factory);
             view.Selected += factory.OnSelected;
 
@@ -67,7 +68,7 @@ namespace DroneBase.Controllers
             ServiceLocator.Get<ISelectionService>().UnRegisterObject(this);
             _view.Selected -= OnSelected;
         }
-        
+
         public void TakeResources(ResourcesContainer container)
         {
             _model.AddResource(container);

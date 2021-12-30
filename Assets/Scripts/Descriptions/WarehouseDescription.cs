@@ -12,14 +12,13 @@ namespace DroneBase.Descriptions
     [Serializable]
     public class WarehouseDescription :IWarehouseDescription
     {
-        [SerializeField] private IdentifierContainer _identifierContainer;
-        [SerializeField] private EntityType _type;
+        [SerializeField, Title("Entity ID")] private IdentifierContainer _identifierContainer;
+        [SerializeField, Title("WarehouseDescription")] private EntityType _type;
         [SerializeField] private GameObject _factoryPrefab;
-        [SerializeField] private ResourceType _resourceType;
-        [SerializeField] private int _quantity;
-        
+        [SerializeField,BoxGroup("Resource Storage")] private ResourcesContainer _resourceStorage;
+
         public int Id => _identifierContainer.Id;
         public GameObject Prefab => _factoryPrefab;
-        public IWarehouseModel BuildingModel => new WarehouseModel(_type, new ResourcesContainer(_quantity,_resourceType));
+        public IWarehouseModel BuildingModel => new WarehouseModel(_type, _resourceStorage);
     }
 }

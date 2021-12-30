@@ -18,6 +18,7 @@ namespace DroneBase.Views
         private IFactoryModel _model;
         private IFactoryController _controller;
 
+        public int Id => _model.Id;
         public Vector3 InteractivePoint => _actionAreaTransform.position;
         public EntityType Type => _model.Type;
         public ITarget GetTarget => _controller;

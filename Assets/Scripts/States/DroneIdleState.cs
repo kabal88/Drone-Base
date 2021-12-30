@@ -38,7 +38,6 @@ namespace DroneBase.States
                     break;
                 case EntityType.Building:
                     model.SetTargetData(target);
-                    ExitState();
                     Context.SetState(new DroneMovingToBuildingState(Context));
                     break;
                 case EntityType.Camera:

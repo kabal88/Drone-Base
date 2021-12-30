@@ -13,7 +13,8 @@ namespace DroneBase.Controllers
         
         private IWarehouseModel _model;
         private IWarehouseView _view;
-        
+
+        public int Id => _model.Id;
         public ITarget GetTarget => this;
         public ISelect GetSelect => this;
         public EntityType Type => _model.Type;
@@ -39,6 +40,7 @@ namespace DroneBase.Controllers
 
             var warehouse = new WarehouseController(model, view);
             view.Init(warehouse, model);
+            
             
             ServiceLocator.Get<ISelectionService>().RegisterObject(warehouse);
             view.Selected += warehouse.OnSelected;

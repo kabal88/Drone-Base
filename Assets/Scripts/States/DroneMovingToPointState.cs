@@ -16,6 +16,7 @@ namespace DroneBase.States
         public override void EnterState()
         {
             ServiceLocator.Get<IFixUpdateService>().RegisterObject(this);
+            Context.MoveSystem.SetDestination(Context.Model.CurrentTargetData.Point);
         }
 
         public override void Execute()

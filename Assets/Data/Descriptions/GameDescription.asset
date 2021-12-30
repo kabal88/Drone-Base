@@ -18,11 +18,13 @@ MonoBehaviour:
       _playerIdentifierContainer: {fileID: 11400000, guid: a35ce805ec837464ea09dec346ab6654, type: 2}
       _cameraIdentifierContainer: {fileID: 11400000, guid: 40aef1fca5258e942a594ce197fbd6b2, type: 2}
       _spawnSystemIdentifierContainer: {fileID: 11400000, guid: b6cad3abea8e3eb4fa6d178bffdc1f45, type: 2}
-      _buildingsPresetList:
+      _factoriesPresetList:
       - _identifierContainer: {fileID: 11400000, guid: 917c763aaa565a341b3f90f593378eae, type: 2}
         _quantity: 1
+      _warehousesPresetList:
       - _identifierContainer: {fileID: 11400000, guid: b822d181bdfb5e44abc4403e273edd43, type: 2}
         _quantity: 1
-      _unitsPresetList:
+      _droneBasesPresetList: []
+      _dronesPresetList:
       - _identifierContainer: {fileID: 11400000, guid: 1515249dbe72b464fb76ab04853bd559, type: 2}
-        _quantity: 3
+        _quantity: 2

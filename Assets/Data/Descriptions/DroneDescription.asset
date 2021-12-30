@@ -23,5 +23,7 @@ MonoBehaviour:
       Rotation: {x: 0, y: 0, z: 0}
       RotationSpeed: 140
     _availableAbilitiesData:
-    - Ability: 0
-      IdentifierContainer: {fileID: 0}
+    - IdentifierContainer: {fileID: 11400000, guid: 14260441e0a68264581ae0833a1f4bbc, type: 2}
+      Ability: 1
+    - IdentifierContainer: {fileID: 11400000, guid: 66f057a30bfd7764cb65bfc032d0085c, type: 2}
+      Ability: 2

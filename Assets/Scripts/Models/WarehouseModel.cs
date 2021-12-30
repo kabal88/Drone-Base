@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using DroneBase.Data;
+﻿using DroneBase.Data;
 using DroneBase.Enums;
+using DroneBase.Identifier;
 using DroneBase.Interfaces;
 using UnityEngine;
 
@@ -8,11 +8,12 @@ namespace DroneBase.Models
 {
     public class WarehouseModel : IWarehouseModel
     {
+        public int Id { get; }
         public EntityType Type { get; }
         public Vector3 InteractivePoint { get; private set; }
         public Vector3 Position { get; private set; }
         public Quaternion Rotation { get; private set; }
-        public TargetData GetTargetData => new TargetData(InteractivePoint, Type);
+        public TargetData GetTargetData => new TargetData(InteractivePoint, Type, Id);
         public ResourceType StorageResourceType { get; }
         public int StorageResourceQuantity { get; private set; }
 
@@ -25,6 +26,7 @@ namespace DroneBase.Models
             InteractivePoint = interactivePoint;
             Position = position;
             Rotation = rotation;
+            Id = IDGenerator.GetNewId(this);
         }
 
         public void SetPosition(Vector3 position)

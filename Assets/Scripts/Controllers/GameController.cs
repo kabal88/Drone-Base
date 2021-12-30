@@ -40,13 +40,16 @@ namespace DroneBase.Controllers
 
             camera.InjectMouseInputSystem(inputSystem);
 
-            var units = CreateDrones(_model.PresetData.UnitsPresets);
+            var drones = CreateDrones(_model.PresetData.DronesPresets);
+            var factories = CreateFactories(_model.PresetData.FactoriesPresets);
+            var warehouses = CreateWarehouses(_model.PresetData.WarehousesPresetList);
 
+            var units = new List<IUnitController>(drones);
+            
             var playerController = PlayerController.CreatePlayerController(
                 _model.Library.GetPlayerDescription(_model.PresetData.PlayerContainerId),
                 inputSystem, units);
 
-            var factories = CreateBuildings(_model.PresetData.BuildingsPresets);
         }
 
         private void SetupServices()
@@ -65,10 +68,10 @@ namespace DroneBase.Controllers
                 _model.Library.GetSpawnSystemDescription(_model.PresetData.SpawnSystemId)));
         }
 
-        private List<IUnitController> CreateDrones(IEnumerable<EntityPresetData> presets)
+        private List<IDroneController> CreateDrones(IEnumerable<EntityPresetData> presets)
         {
             var spawnSystem = ServiceLocator.Get<ISpawnSystemService>();
-            var result = new List<IUnitController>();
+            var result = new List<IDroneController>();
             foreach (var preset in presets)
             {
                 for (int i = 0; i < preset.Quantity; i++)
@@ -88,10 +91,10 @@ namespace DroneBase.Controllers
             return result;
         }
 
-        private List<IBuildingController> CreateBuildings(IEnumerable<EntityPresetData> presets)
+        private List<IFactoryController> CreateFactories(IEnumerable<EntityPresetData> presets)
         {
             var spawnSystem = ServiceLocator.Get<ISpawnSystemService>();
-            var result = new List<IBuildingController>();
+            var result = new List<IFactoryController>();
             foreach (var preset in presets)
             {
                 for (int i = 0; i < preset.Quantity; i++)
@@ -107,7 +110,34 @@ namespace DroneBase.Controllers
                             pointModel.PointData
                         )
                     );
-                    
+
+                    pointModel.SetIsBlocked(true);
+                }
+            }
+
+            return result;
+        }
+        
+        private List<IWarehouseController> CreateWarehouses(IEnumerable<EntityPresetData> presets)
+        {
+            var spawnSystem = ServiceLocator.Get<ISpawnSystemService>();
+            var result = new List<IWarehouseController>();
+            foreach (var preset in presets)
+            {
+                for (int i = 0; i < preset.Quantity; i++)
+                {
+                    var pointModel = spawnSystem
+                        .GetSpawnPointsByPredicate(x =>
+                            x.Model.PointType == EntityType.Building && x.Model.IsBlocked != true).First()
+                        .Model;
+
+                    result.Add(WarehouseController.CreateWarehouseController(
+                            _model.Library.GetBuildingDescription<IWarehouseDescription, IWarehouseModel>(
+                                preset.ContainerId),
+                            pointModel.PointData
+                        )
+                    );
+
                     pointModel.SetIsBlocked(true);
                 }
             }

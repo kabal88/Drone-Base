@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e20e836a4c54ce6b8332719974380da, type: 3}
-  m_Name: ResourceCollectingAbilityDescription
+  m_Script: {fileID: 11500000, guid: 82d257ff468242f4922a016b60b48bb8, type: 3}
+  m_Name: GiveAbility
   m_EditorClassIdentifier: 
-  description:
-    _identifierContainer: {fileID: 11400000, guid: 14260441e0a68264581ae0833a1f4bbc, type: 2}
-    _quantityOfCaring: 10
+  ID: 0

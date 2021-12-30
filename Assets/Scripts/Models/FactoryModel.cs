@@ -2,21 +2,24 @@
 using DroneBase.Data;
 using UnityEngine;
 using DroneBase.Enums;
+using DroneBase.Identifier;
 using DroneBase.Interfaces;
 
 namespace DroneBase.Models
 {
-    public class FactoryModel :IFactoryModel
+    public class FactoryModel : IFactoryModel
     {
+        public int Id { get; }
         private Dictionary<ResourceType, int> _resourceStorage;
         public EntityType Type { get; }
         public Vector3 Position { get; private set; }
         public Quaternion Rotation { get; private set; }
         public Vector3 InteractivePoint { get; private set; }
 
-        public TargetData GetTargetData => new TargetData(InteractivePoint, Type);
+        public TargetData GetTargetData => new TargetData(InteractivePoint, Type, Id);
 
-        public FactoryModel(EntityType type, List<ResourcesContainer> resources, Vector3 interactivePoint = default, Vector3 position = default, Quaternion rotation = default)
+        public FactoryModel(EntityType type, List<ResourcesContainer> resources, Vector3 interactivePoint = default,
+            Vector3 position = default, Quaternion rotation = default)
         {
             _resourceStorage = new Dictionary<ResourceType, int>();
 
@@ -25,7 +28,7 @@ namespace DroneBase.Models
                 AddResource(resource);
             }
 
-            
+            Id = IDGenerator.GetNewId(this);
             Type = type;
             InteractivePoint = interactivePoint;
             Position = position;
@@ -46,7 +49,7 @@ namespace DroneBase.Models
         {
             InteractivePoint = point;
         }
-        
+
         public void AddResource(ResourcesContainer container)
         {
             if (_resourceStorage.ContainsKey(container.Type))
@@ -55,11 +58,11 @@ namespace DroneBase.Models
             }
             else
             {
-                _resourceStorage.Add(container.Type,container.Quantity);
+                _resourceStorage.Add(container.Type, container.Quantity);
             }
         }
 
-        public bool TryGetResource(ResourcesContainer container, out int qty)
+        public bool TryGetResource(ResourcesContainer container, out int qty) //TODO: переделать! происходит что-то не понятное
         {
             var result = false;
             qty = 0;

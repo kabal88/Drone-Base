@@ -1,5 +1,6 @@
 ﻿using System;
 using DroneBase.Data;
+using DroneBase.Enums;
 using DroneBase.Interfaces;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ namespace DroneBase.States
 
         public override void EnterState()
         {
-            
+            Context.MoveSystem.SetDestination(Context.Model.CurrentTargetData.Point);
         }
 
         public override void Execute()
@@ -28,7 +29,23 @@ namespace DroneBase.States
 
         public override void SetTarget(TargetData target, IUnitModel model)
         {
-            throw new NotImplementedException();
+            switch (target.Type)
+            {
+                case EntityType.None:
+                case EntityType.Unit:
+                    model.SetTargetData(target);
+                    ExitState();
+                    Context.SetState(new DroneMovingToPointState(Context));
+                    break;
+                case EntityType.Building:
+                    model.SetTargetData(target);
+                    Context.MoveSystem.SetDestination(target.Point);
+                    break;
+                case EntityType.Camera:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         public override void SetSelection(ISelectionView view)

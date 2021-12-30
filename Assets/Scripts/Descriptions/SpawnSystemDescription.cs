@@ -5,6 +5,7 @@ using DroneBase.Data;
 using DroneBase.Identifier;
 using DroneBase.Interfaces;
 using DroneBase.Models;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace DroneBase.Descriptions
@@ -12,8 +13,8 @@ namespace DroneBase.Descriptions
     [Serializable]
     public sealed class SpawnSystemDescription : ISpawnSystemDescription
     {
-        [SerializeField] private IdentifierContainer _identifierContainer;
-        [SerializeField] private List<SpawnPointDescription> _pointDescriptions = new List<SpawnPointDescription>();
+        [SerializeField, Title("Entity ID")] private IdentifierContainer _identifierContainer;
+        [SerializeField, Title("Points"), TableList] private List<SpawnPointDescription> _pointDescriptions = new List<SpawnPointDescription>();
 
         public int Id => _identifierContainer.Id;
 

@@ -18,15 +18,16 @@ namespace DroneBase.Controllers
 
         private IDroneModel _droneModel;
         private IDroneView _droneView;
-        private IMoveSystem _moveSystem;
-        private IAbilitiesSystem _abilitiesSystem;
         private IUnitState _unitState;
 
+        public int Id => _droneModel.Id;
         public EntityType Type => _droneModel.Type;
         public ISelect GetSelect => this;
         public Vector3? PreviousTarget => _droneModel.PreviousTarget;
-        public IMoveSystem MoveSystem => _moveSystem;
+        public IMoveSystem MoveSystem { get; }
         public IUnitModel Model => _droneModel;
+        public IAbilitiesSystem AbilitiesSystem { get; }
+
 
         private DroneController(
             IDroneModel model,
@@ -35,15 +36,15 @@ namespace DroneBase.Controllers
             IAbilitiesSystem abilitiesSystem
         )
         {
-            _moveSystem = moveSystem;
-            _abilitiesSystem = abilitiesSystem;
+            MoveSystem = moveSystem;
+            AbilitiesSystem = abilitiesSystem;
             _droneModel = model;
             _droneView = view;
             _droneView.Selected += OnViewSelected;
         }
 
         public static DroneController CreateDroneController(IDroneDescription description, SpawnPointData pointData,
-            Library library) //TODO: убрать передачу всей библиотеки
+            Library library)                            //TODO: убрать передачу всей библиотеки
         {
             var view =
                 GameObject.Instantiate(description.Prefab, pointData.Position, pointData.Rotation)
@@ -52,6 +53,7 @@ namespace DroneBase.Controllers
             var model = description.Model;
 
             view.SetNavMeshSettings(model.Speed, model.RotationSpeed);
+            view.SetID(model.Id);
 
             var abilitySystem = AbilitySystem.CreateAbilitiesSystem(description.AvailableAbilitiesMap, library);
 

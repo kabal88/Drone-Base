@@ -17,6 +17,7 @@ namespace DroneBase.Views
         private IWarehouseController _controller;
         private IWarehouseModel _model;
 
+        public int Id => _model.Id;
         public Vector3 InteractivePoint => _actionAreaTransform.position;
         public EntityType Type => _model.Type;
         public ITarget GetTarget => _controller;
@@ -41,6 +42,11 @@ namespace DroneBase.Views
         public void SetInteractivePoint(Vector3 point)
         {
             _actionAreaTransform.position = point;
+        }
+        
+        private void OnMouseDown()
+        {
+            Selected?.Invoke();
         }
 
         public void AskForResources(IResourceReceiver receiver, int qty)

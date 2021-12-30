@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: ResourceGivingAbilityDescription
   m_EditorClassIdentifier: 
   description:
-    _identifierContainer: {fileID: 0}
+    _identifierContainer: {fileID: 11400000, guid: 66f057a30bfd7764cb65bfc032d0085c, type: 2}
     _quantityOfCaring: 10

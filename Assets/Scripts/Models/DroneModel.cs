@@ -1,5 +1,6 @@
 ﻿using DroneBase.Data;
 using DroneBase.Enums;
+using DroneBase.Identifier;
 using DroneBase.Interfaces;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace DroneBase.Models
 {
     public sealed class DroneModel : IDroneModel
     {
+        public int Id { get; }
         public float Speed { get; }
         public float RotationSpeed { get; }
         public Vector3 Position { get; private set; }
@@ -17,8 +19,10 @@ namespace DroneBase.Models
         public EntityType Type { get; }
         public ResourcesContainer Container { get; private set; }
 
+
         public DroneModel(MoveData moveData, RotationData rotationData, EntityType type)
         {
+            Id = IDGenerator.GetNewId(this);
             Type = type;
             Speed = moveData.Speed;
             Position = moveData.Position;
@@ -26,7 +30,7 @@ namespace DroneBase.Models
             Rotation = Quaternion.Euler(rotationData.Rotation);
             PreviousTarget = null;
         }
-        
+
         public void SetTargetData(TargetData data)
         {
             PreviousTarget = CurrentTargetData.Point;
@@ -47,7 +51,7 @@ namespace DroneBase.Models
         {
             Rotation = rotation;
         }
-        
+
         public void SetResourcesContainer(ResourcesContainer container)
         {
             Container = container;

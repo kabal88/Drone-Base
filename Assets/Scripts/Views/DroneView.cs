@@ -15,8 +15,12 @@ namespace DroneBase.Views
         [SerializeField] private SelectSpriteAnimator _animator;
         [SerializeField] private DroneSensor _sensor;
 
+        public int Id { get; private set; }
+
         public Transform Transform => transform;
+
         public NavMeshAgent NavMeshAgent => _navMeshAgent;
+
 
         public void OnEnable()
         {
@@ -32,6 +36,11 @@ namespace DroneBase.Views
         {
             _navMeshAgent.speed = speed;
             _navMeshAgent.angularSpeed = rotationSpeed;
+        }
+
+        public void SetID(int id)
+        {
+            Id = id;
         }
 
         public void PlaySelectionAnimation()

@@ -3,6 +3,7 @@ using DroneBase.Abilities;
 using DroneBase.Identifier;
 using DroneBase.Interfaces;
 using DroneBase.Models;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace DroneBase.Descriptions
@@ -10,8 +11,8 @@ namespace DroneBase.Descriptions
     [Serializable]
     public class ResourceCollectingAbilityDescription : AbilityGenericDescription<ResourceCollectingAbility>
     {
-        [SerializeField] private IdentifierContainer _identifierContainer;
-        [SerializeField] private int _quantityOfCaring;
+        [SerializeField, Title("Entity ID")] private IdentifierContainer _identifierContainer;
+        [SerializeField, Title("Ability Description")] private int _quantityOfCaring;
 
         public override int Id => _identifierContainer.Id;
         public override int QuantityOfCarring => _quantityOfCaring;
