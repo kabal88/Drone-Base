@@ -18,6 +18,7 @@ MonoBehaviour:
       _playerIdentifierContainer: {fileID: 11400000, guid: a35ce805ec837464ea09dec346ab6654, type: 2}
       _cameraIdentifierContainer: {fileID: 11400000, guid: 40aef1fca5258e942a594ce197fbd6b2, type: 2}
       _spawnSystemIdentifierContainer: {fileID: 11400000, guid: b6cad3abea8e3eb4fa6d178bffdc1f45, type: 2}
+      _canvasIdentifierContainer: {fileID: 11400000, guid: 70f9aca8f3691cd43a2541326a7ea165, type: 2}
       _factoriesPresetList:
       - _identifierContainer: {fileID: 11400000, guid: 917c763aaa565a341b3f90f593378eae, type: 2}
         _quantity: 1

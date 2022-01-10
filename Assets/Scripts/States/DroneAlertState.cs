@@ -49,7 +49,6 @@ namespace DroneBase.States
 
         public override void FixedUpdateLocal()
         {
-            throw new NotImplementedException();
         }
     }
 }

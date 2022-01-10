@@ -4,6 +4,7 @@ using DroneBase.Data;
 using DroneBase.Enums;
 using DroneBase.Interfaces;
 using DroneBase.Services;
+using DroneBase.States;
 using Sirenix.Utilities;
 
 namespace DroneBase.Controllers
@@ -12,20 +13,24 @@ namespace DroneBase.Controllers
     {
         private IPlayerModel _playerModel;
         private IInputSystem _inputSystem;
+        private ICanvasController _canvas;
 
         private PlayerController(
             IPlayerModel playerModel,
-            IInputSystem inputSystem
-        )
+            IInputSystem inputSystem,
+            ICanvasController canvas)
         {
             _inputSystem = inputSystem;
+            _canvas = canvas;
             _playerModel = playerModel;
             _inputSystem.RightMouseButtonClick += SetTarget;
         }
 
         public static PlayerController CreatePlayerController(
             IPlayerDescription description,
-            IInputSystem inputSystem, List<IUnitController> units = default)
+            IInputSystem inputSystem,
+            ICanvasController canvasController,
+            List<IUnitController> units = default)
         {
             var model = description.PlayerModel;
 
@@ -37,8 +42,11 @@ namespace DroneBase.Controllers
                 }
             }
 
-            var player = new PlayerController(description.PlayerModel, inputSystem);
+            var player = new PlayerController(model, inputSystem, canvasController);
+            
             ServiceLocator.Get<ISelectionService>().Selected += player.OnSelected;
+            canvasController.AlarmClicked += player.OnAlarmed;
+            
             return player;
         }
 
@@ -67,7 +75,33 @@ namespace DroneBase.Controllers
         public void Dispose()
         {
             ServiceLocator.Get<ISelectionService>().Selected -= OnSelected;
+            _canvas.AlarmClicked -= OnAlarmed;
             _inputSystem.RightMouseButtonClick -= SetTarget;
+        }
+
+        private void OnAlarmed()
+        {
+            CustomDebug.Log($"Alarm pressed!");
+            
+            _playerModel.SetIsAlarmOn(!_playerModel.IsAlarmOn);
+            _canvas.SetAlarm(_playerModel.IsAlarmOn);
+
+            if (_playerModel.IsAlarmOn)
+            {
+                foreach (var drone in _playerModel.AllDrones)
+                {
+                    drone.SetState(new DroneAlertState(drone));
+                }
+            }
+            else
+            {
+                foreach (var drone in _playerModel.AllDrones)
+                {
+                    drone.SetState(new DroneIdleState(drone));
+                }
+            }
+
+            
         }
     }
 }

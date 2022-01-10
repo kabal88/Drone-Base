@@ -5,6 +5,7 @@ namespace DroneBase.Interfaces
 {
     public interface IGameModel
     {
+        bool IsGameCreated { get; }
         IUpdatable UpdateService { get; }
         IFixUpdatable FixUpdateService { get; }
         Library Library { get; }
@@ -13,5 +14,6 @@ namespace DroneBase.Interfaces
         void SetUpdateService(IUpdatable service);
         void SetFixUpdateService(IFixUpdatable service);
         void Init(Library library);
+        void SetIsGameCreated(bool isGameCreated);
     }
 }

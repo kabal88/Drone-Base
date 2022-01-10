@@ -12,6 +12,7 @@ namespace DroneBase.Data
        [SerializeField, Title("Player",Bold = false)] private IdentifierContainer _playerIdentifierContainer;
        [SerializeField, Title("Scene components",Bold = false)] private IdentifierContainer _cameraIdentifierContainer;
        [SerializeField] private IdentifierContainer _spawnSystemIdentifierContainer;
+       [SerializeField] private IdentifierContainer _canvasIdentifierContainer;
        [Title("Buildings",Bold = false)]
        [SerializeField, TableList] private List<EntityPresetData> _factoriesPresetList;
        [SerializeField, TableList] private List<EntityPresetData> _warehousesPresetList;
@@ -22,6 +23,7 @@ namespace DroneBase.Data
        public int PlayerContainerId => _playerIdentifierContainer.Id;
        public int CameraContainerId => _cameraIdentifierContainer.Id;
        public int SpawnSystemId => _spawnSystemIdentifierContainer.Id;
+       public int CanvasId => _canvasIdentifierContainer.Id;
 
        public IEnumerable<EntityPresetData> DronesPresets => _dronesPresetList;
        public IEnumerable<EntityPresetData> FactoriesPresets => _factoriesPresetList;

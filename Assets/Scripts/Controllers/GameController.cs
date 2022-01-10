@@ -35,6 +35,8 @@ namespace DroneBase.Controllers
                 _model.Library.GetCameraDescription(_model.PresetData.CameraContainerId),
                 spawnSystem.GetSpawnPointsByPredicate(x => x.Model.PointType == EntityType.Camera)
                     .First().Model.PointData);
+            var ui = CanvasController.CreateCanvasController(
+                _model.Library.GetCanvasDescription(_model.PresetData.CanvasId), camera.Camera);
 
             var inputSystem = new InputSystem(camera.Camera);
 
@@ -45,11 +47,12 @@ namespace DroneBase.Controllers
             var warehouses = CreateWarehouses(_model.PresetData.WarehousesPresetList);
 
             var units = new List<IUnitController>(drones);
-            
+
             var playerController = PlayerController.CreatePlayerController(
                 _model.Library.GetPlayerDescription(_model.PresetData.PlayerContainerId),
-                inputSystem, units);
-
+                inputSystem, ui, units);
+            
+            _model.SetIsGameCreated(true);
         }
 
         private void SetupServices()
@@ -117,7 +120,7 @@ namespace DroneBase.Controllers
 
             return result;
         }
-        
+
         private List<IWarehouseController> CreateWarehouses(IEnumerable<EntityPresetData> presets)
         {
             var spawnSystem = ServiceLocator.Get<ISpawnSystemService>();
@@ -147,12 +150,19 @@ namespace DroneBase.Controllers
 
         public void UpdateLocal(float deltaTime)
         {
-            _model.UpdateService.UpdateLocal(deltaTime);
+            if (_model.IsGameCreated)
+            {
+                _model.UpdateService.UpdateLocal(deltaTime);
+            }
+            
         }
 
         public void FixedUpdateLocal()
         {
-            _model.FixUpdateService.FixedUpdateLocal();
+            if (_model.IsGameCreated)
+            {
+                _model.FixUpdateService.FixedUpdateLocal();
+            }
         }
     }
 }

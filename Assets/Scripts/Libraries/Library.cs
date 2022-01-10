@@ -28,6 +28,8 @@ namespace DroneBase.Libraries
 
         private Dictionary<int, IAbilityDescription> _abilityDescriptions = new Dictionary<int, IAbilityDescription>();
 
+        private Dictionary<int, ICanvasDescription> _canvasDescriptions = new Dictionary<int, ICanvasDescription>();
+
         public void Init()
         {
             foreach (var description in Descriptions)
@@ -54,6 +56,9 @@ namespace DroneBase.Libraries
                         break;
                     case IAbilityDescription ability:
                         _abilityDescriptions.Add(description.GetDescription.Id,ability);
+                        break;
+                    case ICanvasDescription canvas:
+                        _canvasDescriptions.Add(description.GetDescription.Id,canvas);
                         break;
                 }
             }
@@ -134,6 +139,16 @@ namespace DroneBase.Libraries
             }
 
             throw new Exception($"Ability desc. with id {id} not found");
+        }
+
+        public ICanvasDescription GetCanvasDescription(int id)
+        {
+            if (_canvasDescriptions.TryGetValue(id, out var needed))
+            {
+                return needed;
+            }
+
+            throw new Exception($"Canvas desc. with id {id} not found");
         }
     }
 }

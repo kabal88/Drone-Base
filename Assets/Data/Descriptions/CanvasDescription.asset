@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e66ef4b7d4e647edb1a4e3060691de58, type: 3}
+  m_Name: CanvasDescription
+  m_EditorClassIdentifier: 
+  description:
+    _identifierContainer: {fileID: 11400000, guid: 70f9aca8f3691cd43a2541326a7ea165, type: 2}
+    _prefab: {fileID: 6910890494542423328, guid: e81319364e370084ca4fb27dbce82811, type: 3}
+    _isAlarmOn: 0
+    _planeDistance: 4
