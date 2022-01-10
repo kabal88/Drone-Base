@@ -1,6 +1,6 @@
 ﻿namespace DroneBase.Interfaces
 {
-    public interface IDroneController : IUnitController, IResourceReceiver, IResourceGiver
+    public interface IDroneController : IUnitController, IResourceReceiver, IResourceProvider, IFixUpdatable
     {
     }
 }

@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 6225374414507275552}
-  _actionAreaTransform: {fileID: 4447515883192039922}
+  _actionArea: {fileID: 7630493916035377378}
 --- !u!208 &7705553680055998332
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -227,6 +227,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 863689777831762855, guid: 9c6d887d515737e4db04e200c7b80b92, type: 3}
   m_PrefabInstance: {fileID: 3910445433970614869}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7630493916035377378 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6890582946194688695, guid: 9c6d887d515737e4db04e200c7b80b92, type: 3}
+  m_PrefabInstance: {fileID: 3910445433970614869}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccd34f6835624cb0bad9aae5754d695c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8009675910102628182
 PrefabInstance:
   m_ObjectHideFlags: 0

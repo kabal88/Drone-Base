@@ -15,6 +15,7 @@ namespace DroneBase.Controllers
     {
         public event Action<ISelect> Selected;
         public event Action<ResourcesContainer> ResourcesReceived;
+        public event Action<ResourcesContainer> ResourcesProvide;
 
         private IDroneModel _droneModel;
         private IDroneView _droneView;
@@ -60,6 +61,7 @@ namespace DroneBase.Controllers
             var drone = new DroneController(model, view, new NavMeshMovingSystem(view.NavMeshAgent), abilitySystem);
 
             ServiceLocator.Get<ISelectionService>().RegisterObject(drone);
+            ServiceLocator.Get<IFixUpdateService>().RegisterObject(drone);
             view.SensorCollide += drone.OnSensorCollide;
 
             drone.SetState(new DroneIdleState(drone));
@@ -94,7 +96,6 @@ namespace DroneBase.Controllers
 
         private void OnSensorCollide(Collider collider)
         {
-            CustomDebug.Log($"sensor find: {collider.name}");
             _unitState.OnSensorCollide(collider);
         }
 
@@ -112,7 +113,21 @@ namespace DroneBase.Controllers
         {
             _droneView.Selected -= OnViewSelected;
             _droneView.SensorCollide -= OnSensorCollide;
+            ServiceLocator.Get<IFixUpdateService>().UnRegisterObject(this);
             ServiceLocator.Get<ISelectionService>().UnRegisterObject(this);
+        }
+
+        public void FixedUpdateLocal()
+        {
+            _unitState.FixedUpdateLocal();
+        }
+
+
+        public ResourcesContainer GetResources(int quantity)
+        {
+            var resource = _droneModel.Container;
+            _droneModel.SetResourcesContainer(new ResourcesContainer());
+            return resource;
         }
     }
 }

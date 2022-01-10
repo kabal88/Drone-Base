@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace DroneBase.Interfaces
 {
-    public interface IView
+    public interface IView : IIdentifier
     {
         Transform Transform { get; }
     }

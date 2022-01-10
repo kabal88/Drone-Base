@@ -1,5 +1,6 @@
 ﻿using System;
 using DroneBase.Animations;
+using DroneBase.Data;
 using DroneBase.Enums;
 using DroneBase.Interfaces;
 using UnityEngine;
@@ -9,16 +10,16 @@ namespace DroneBase.Views
     public class WarehouseView : MonoBehaviour, IWarehouseView
     {
         public event Action Selected;
-        public event Action<IResourceReceiver, int> AskedForResources;
+        public event Action<ResourcesContainer> ResourcesProvide;
 
         [SerializeField] private SelectSpriteAnimator _animator;
-        [SerializeField] private Transform _actionAreaTransform;
+        [SerializeField] private ActionArea _actionArea;
 
         private IWarehouseController _controller;
         private IWarehouseModel _model;
 
         public int Id => _model.Id;
-        public Vector3 InteractivePoint => _actionAreaTransform.position;
+        public Vector3 InteractivePoint => _actionArea.InteractivePoint;
         public EntityType Type => _model.Type;
         public ITarget GetTarget => _controller;
         public Transform Transform => transform;
@@ -27,6 +28,7 @@ namespace DroneBase.Views
         {
             _controller = controller;
             _model = model;
+            _actionArea.SetView(this);
         }
 
         public void PlaySelectionAnimation()
@@ -41,7 +43,7 @@ namespace DroneBase.Views
 
         public void SetInteractivePoint(Vector3 point)
         {
-            _actionAreaTransform.position = point;
+            _actionArea.SetInteractivePoint(point);
         }
         
         private void OnMouseDown()
@@ -49,9 +51,9 @@ namespace DroneBase.Views
             Selected?.Invoke();
         }
 
-        public void AskForResources(IResourceReceiver receiver, int qty)
+        public ResourcesContainer GetResources(int quantity)
         {
-            AskedForResources?.Invoke(receiver, qty);
+            return _controller.GetResources(quantity);
         }
     }
 }

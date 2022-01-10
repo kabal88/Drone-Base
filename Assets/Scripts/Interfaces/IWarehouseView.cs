@@ -2,8 +2,7 @@
 
 namespace DroneBase.Interfaces
 {
-    public interface IWarehouseView : IBuildingView<IWarehouseController,IWarehouseModel>, IInteractive, IResourceGiver
+    public interface IWarehouseView : IBuildingView<IWarehouseController,IWarehouseModel>, IInteractive, IResourceProvider
     {
-        event Action<IResourceReceiver,int> AskedForResources;
     }
 }

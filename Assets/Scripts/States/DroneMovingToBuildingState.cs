@@ -8,23 +8,19 @@ namespace DroneBase.States
 {
     public class DroneMovingToBuildingState : UnitStateBase
     {
-        public DroneMovingToBuildingState(IUnitController context) : base(context)
+        public DroneMovingToBuildingState(IDroneController context) : base(context)
         {
         }
 
         public override void EnterState()
         {
+            CustomDebug.Log($"Enter state DroneMovingToBuildingState");
             Context.MoveSystem.SetDestination(Context.Model.CurrentTargetData.Point);
-        }
-
-        public override void Execute()
-        {
-            
         }
 
         public override void ExitState()
         {
-            
+            CustomDebug.Log($"Exit state DroneMovingToBuildingState");
         }
 
         public override void SetTarget(TargetData target, IUnitModel model)
@@ -65,12 +61,17 @@ namespace DroneBase.States
 
         public override void OnSensorCollide(Collider other)
         {
-            if (!other.TryGetComponent<IIdentifier>(out var obj)) return;
-            if (obj.Id != Context.Model.CurrentTargetData.Id) return;
+            CustomDebug.Log($"sensor find: {other.name}");
+            if (!other.TryGetComponent<IActionArea>(out var obj)) return;
+
+            var view = obj.GetView;
+            CustomDebug.Log($"Collide with {obj.GetView.Id}");
+            if (view.Id != Context.Model.CurrentTargetData.Id) return;
+            CustomDebug.Log($"ID {view.Id} matched with {Context.Model.CurrentTargetData.Id}");
             
-            switch (obj)
+            switch (view)
             {
-                case IResourceGiver giver:
+                case IResourceProvider giver:
                     ExitState();
                     Context.SetState(new DroneHarvestingState(Context, giver));
                     break;

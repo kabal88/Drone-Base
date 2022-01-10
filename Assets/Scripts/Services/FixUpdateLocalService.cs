@@ -37,10 +37,12 @@ namespace DroneBase.Services
 
         public void FixedUpdateLocal()
         {
-            foreach (var updatable in _fixUpdatables)
-            {
-                updatable.FixedUpdateLocal();
-            }
+            _fixUpdatables.ForEach(x => x.FixedUpdateLocal());
+            
+            // foreach (var updatable in _fixUpdatables)
+            // {
+            //     updatable.FixedUpdateLocal();
+            // }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using DroneBase.Data;
+using DroneBase.Enums;
 using DroneBase.Interfaces;
 using UnityEngine;
 
@@ -7,53 +8,52 @@ namespace DroneBase.States
 {
     public class DroneHarvestingState : UnitStateBase
     {
-        public DroneHarvestingState(IUnitController context, IResourceGiver giver) : base(context)
+        private IResourceProvider _provider;
+
+        public DroneHarvestingState(IDroneController context, IResourceProvider provider) : base(context)
         {
+            _provider = provider;
         }
 
         public override void EnterState()
         {
-            throw new NotImplementedException();
-        }
-
-        public override void Execute()
-        {
-            throw new NotImplementedException();
+            CustomDebug.Log($"Enter state DroneHarvestingState");
+            if (_provider is ITargetable targetable)
+                Context.AbilitiesSystem.ExecuteAbility(Context, DroneAbility.Collect, targetable.GetTarget);
+            ExitState();
+            Context.SetState(new DroneIdleState(Context));
         }
 
         public override void ExitState()
         {
-            throw new NotImplementedException();
+            CustomDebug.Log($"Exit state DroneHarvestingState");
         }
 
         public override void SetTarget(TargetData target, IUnitModel model)
         {
-            throw new NotImplementedException();
         }
 
         public override void SetSelection(ISelectionView view)
         {
-            throw new NotImplementedException();
+            view.PlaySelectionAnimation();
         }
 
         public override void ClearSelection(ISelectionView view)
         {
-            throw new NotImplementedException();
+            view.StopSelectionAnimation();
         }
 
         public override void OnViewSelected(ISelect obj, Action<ISelect> callback)
         {
-            throw new NotImplementedException();
+            callback.Invoke(obj);
         }
 
         public override void OnSensorCollide(Collider other)
         {
-            throw new NotImplementedException();
         }
 
         public override void FixedUpdateLocal()
         {
-            throw new NotImplementedException();
         }
     }
 }

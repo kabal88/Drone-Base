@@ -342,13 +342,5 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnSystem
       objectReference: {fileID: 0}
-    - target: {fileID: 8086786758365947023, guid: 376fff3ab32d2dc47828d754c8ace193, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -9.67
-      objectReference: {fileID: 0}
-    - target: {fileID: 8086786758365947023, guid: 376fff3ab32d2dc47828d754c8ace193, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -3.75
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 376fff3ab32d2dc47828d754c8ace193, type: 3}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DroneBase.Interfaces
 {
-    public interface IUnitState : IState<IUnitController>, IFixUpdatable
+    public interface IUnitState : IState<IDroneController>, IFixUpdatable
     {
         void SetTarget(TargetData data, IUnitModel model);
         void SetSelection(ISelectionView view);

@@ -9,23 +9,19 @@ namespace DroneBase.States
 {
     public class DroneMovingToPointState : UnitStateBase
     {
-        public DroneMovingToPointState(IUnitController context) : base(context)
+        public DroneMovingToPointState(IDroneController context) : base(context)
         {
         }
 
         public override void EnterState()
         {
-            ServiceLocator.Get<IFixUpdateService>().RegisterObject(this);
+            CustomDebug.Log($"Enter state DroneMovingToPointState");
             Context.MoveSystem.SetDestination(Context.Model.CurrentTargetData.Point);
-        }
-
-        public override void Execute()
-        {
         }
 
         public override void ExitState()
         {
-            ServiceLocator.Get<IFixUpdateService>().UnRegisterObject(this);
+            CustomDebug.Log($"Exit state DroneMovingToPointState");
         }
 
         public override void SetSelection(ISelectionView view)

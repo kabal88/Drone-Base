@@ -4,7 +4,6 @@
     {
         public T Context { get; }
         void EnterState();
-        void Execute();
         void ExitState();
     }
 }

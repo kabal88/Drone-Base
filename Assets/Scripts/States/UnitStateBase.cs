@@ -7,15 +7,14 @@ namespace DroneBase.States
 {
     public abstract class UnitStateBase :IUnitState
     {
-        public IUnitController Context { get; }
+        public IDroneController Context { get; }
 
-        protected UnitStateBase(IUnitController context)
+        protected UnitStateBase(IDroneController context)
         {
             Context = context;
         }
         
         public abstract void EnterState();
-        public abstract void Execute();
         public abstract void ExitState();
         public abstract void SetTarget(TargetData target, IUnitModel model);
         public abstract void SetSelection(ISelectionView view);

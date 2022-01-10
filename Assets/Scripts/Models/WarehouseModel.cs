@@ -46,6 +46,8 @@ namespace DroneBase.Models
 
         public void AddResource(ResourcesContainer container)
         {
+            CustomDebug.Log($"Add container with {container.Type} - {container.Quantity}");
+            
             if (StorageResourceType == container.Type)
             {
                 StorageResourceQuantity += container.Quantity;
@@ -71,6 +73,8 @@ namespace DroneBase.Models
                     StorageResourceQuantity = 0;
                 }
             }
+            
+            CustomDebug.Log($"StorageResourceQuantity = {StorageResourceQuantity}");
 
             return result;
         }

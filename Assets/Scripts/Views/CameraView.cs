@@ -9,5 +9,6 @@ namespace DroneBase.Views
         
         public Transform Transform => transform;
         public Camera Camera => _camera;
+        public int Id { get; }
     }
 }

@@ -7,13 +7,11 @@ namespace DroneBase.Abilities
     {
         public override void Execute(ISelect owner, ITarget target)
         {
-            if (owner is IResourceReceiver receiver)
-            {
-                if (target is IResourceGiver giver)
-                {
-                    giver.AskForResources(receiver,Model.AmountOfCarring);
-                }
-            }
+            if (!(owner is IResourceReceiver receiver)) return;
+            if (!(target is IResourceProvider giver)) return;
+            
+            var resources = giver.GetResources(Model.AmountOfCarring);
+            receiver.TakeResources(resources);
         }
     }
 }

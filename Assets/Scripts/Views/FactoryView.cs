@@ -13,13 +13,13 @@ namespace DroneBase.Views
         public event Action<ResourcesContainer> ResourcesReceived;
 
         [SerializeField] private SelectSpriteAnimator _animator;
-        [SerializeField] private Transform _actionAreaTransform;
+        [SerializeField] private ActionArea _actionArea;
 
         private IFactoryModel _model;
         private IFactoryController _controller;
 
         public int Id => _model.Id;
-        public Vector3 InteractivePoint => _actionAreaTransform.position;
+        public Vector3 InteractivePoint => _actionArea.InteractivePoint;
         public EntityType Type => _model.Type;
         public ITarget GetTarget => _controller;
         public Transform Transform => transform;
@@ -28,6 +28,7 @@ namespace DroneBase.Views
         {
             _model = model;
             _controller = controller;
+            _actionArea.SetView(this);
         }
 
         public void PlaySelectionAnimation()
@@ -47,7 +48,7 @@ namespace DroneBase.Views
         
         public void SetInteractivePoint(Vector3 point)
         {
-            _actionAreaTransform.position = point;
+            _actionArea.SetInteractivePoint(point);
         }
         
         public void TakeResources(ResourcesContainer container)

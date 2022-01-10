@@ -9,21 +9,18 @@ namespace DroneBase.States
 {
     public class DroneIdleState : UnitStateBase
     {
-        public DroneIdleState(IUnitController context) : base(context)
+        public DroneIdleState(IDroneController context) : base(context)
         {
         }
 
         public override void EnterState()
         {
-            
-        }
-
-        public override void Execute()
-        {
+            CustomDebug.Log($"Enter state DroneIdleState");
         }
 
         public override void ExitState()
         {
+            CustomDebug.Log($"Exit state DroneIdleState");
         }
 
         public override void SetTarget(TargetData target, IUnitModel model)
@@ -68,7 +65,6 @@ namespace DroneBase.States
 
         public override void FixedUpdateLocal()
         {
-            throw new NotImplementedException();
         }
     }
 }

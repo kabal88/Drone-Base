@@ -10,7 +10,8 @@ namespace DroneBase.Controllers
     public class WarehouseController : IWarehouseController, IDisposable
     {
         public event Action<ISelect> Selected;
-        
+        public event Action<ResourcesContainer> ResourcesProvide;
+
         private IWarehouseModel _model;
         private IWarehouseView _view;
 
@@ -19,13 +20,13 @@ namespace DroneBase.Controllers
         public ISelect GetSelect => this;
         public EntityType Type => _model.Type;
         public TargetData TargetData => _model.GetTargetData;
-        
+
         public WarehouseController(IWarehouseModel model, IWarehouseView view)
         {
             _model = model;
             _view = view;
         }
-        
+
         public static WarehouseController CreateWarehouseController(IWarehouseDescription description,
             SpawnPointData pointData)
         {
@@ -40,20 +41,19 @@ namespace DroneBase.Controllers
 
             var warehouse = new WarehouseController(model, view);
             view.Init(warehouse, model);
-            
-            
+
+
             ServiceLocator.Get<ISelectionService>().RegisterObject(warehouse);
             view.Selected += warehouse.OnSelected;
-            view.AskedForResources += warehouse.OnAskedForResources;
 
             return warehouse;
         }
 
-        private void OnAskedForResources(IResourceReceiver receiver,int qty)
+        private void OnAskedForResources(IResourceReceiver receiver, int qty)
         {
-            if (_model.TryGetResource(new ResourcesContainer(qty,_model.StorageResourceType), out qty))
+            if (_model.TryGetResource(new ResourcesContainer(qty, _model.StorageResourceType), out qty))
             {
-                receiver.TakeResources(new ResourcesContainer(qty,_model.StorageResourceType));
+                receiver.TakeResources(new ResourcesContainer(qty, _model.StorageResourceType));
             }
         }
 
@@ -71,17 +71,23 @@ namespace DroneBase.Controllers
         {
             Selected?.Invoke(this);
         }
-        
+
         public void Dispose()
         {
             ServiceLocator.Get<ISelectionService>().UnRegisterObject(this);
             _view.Selected -= OnSelected;
-            _view.AskedForResources -= OnAskedForResources;
         }
 
         public void AskForResources(IResourceReceiver receiver, int quantity)
         {
             OnAskedForResources(receiver, quantity);
+        }
+
+        public ResourcesContainer GetResources(int quantity)
+        {
+            return _model.TryGetResource(new ResourcesContainer(quantity, _model.StorageResourceType), out quantity)
+                ? new ResourcesContainer(quantity, _model.StorageResourceType)
+                : new ResourcesContainer();
         }
     }
 }

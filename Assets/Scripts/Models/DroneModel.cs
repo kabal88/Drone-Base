@@ -54,6 +54,7 @@ namespace DroneBase.Models
 
         public void SetResourcesContainer(ResourcesContainer container)
         {
+            CustomDebug.Log($"Take container with {container.Type} - {container.Quantity}");
             Container = container;
         }
     }

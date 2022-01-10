@@ -7,23 +7,18 @@ namespace DroneBase.States
 {
     public class DroneAlertState : UnitStateBase
     {
-        public DroneAlertState(IUnitController context) : base(context)
+        public DroneAlertState(IDroneController context) : base(context)
         {
         }
 
         public override void EnterState()
         {
-            throw new NotImplementedException();
-        }
-
-        public override void Execute()
-        {
-            throw new NotImplementedException();
+            CustomDebug.Log($"Enter state DroneAlertState");
         }
 
         public override void ExitState()
         {
-            throw new NotImplementedException();
+            CustomDebug.Log($"Exit state DroneAlertState");
         }
 
         public override void SetTarget(TargetData target, IUnitModel model)
