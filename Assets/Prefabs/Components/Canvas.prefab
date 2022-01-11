@@ -152,7 +152,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 773546715236978230, guid: a8d2fb0391af05a4eaf132e0b07ca24e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 773546715236978230, guid: a8d2fb0391af05a4eaf132e0b07ca24e, type: 3}
       propertyPath: m_SizeDelta.y
@@ -209,6 +209,30 @@ PrefabInstance:
     - target: {fileID: 4462583759378071325, guid: a8d2fb0391af05a4eaf132e0b07ca24e, type: 3}
       propertyPath: m_Name
       value: CustomButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 6966948094330821977, guid: a8d2fb0391af05a4eaf132e0b07ca24e, type: 3}
+      propertyPath: _offColor.b
+      value: 0.17556073
+      objectReference: {fileID: 0}
+    - target: {fileID: 6966948094330821977, guid: a8d2fb0391af05a4eaf132e0b07ca24e, type: 3}
+      propertyPath: _offColor.g
+      value: 0.8584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 6966948094330821977, guid: a8d2fb0391af05a4eaf132e0b07ca24e, type: 3}
+      propertyPath: _offColor.r
+      value: 0.29856876
+      objectReference: {fileID: 0}
+    - target: {fileID: 8902341912928952800, guid: a8d2fb0391af05a4eaf132e0b07ca24e, type: 3}
+      propertyPath: m_Color.b
+      value: 0.17556073
+      objectReference: {fileID: 0}
+    - target: {fileID: 8902341912928952800, guid: a8d2fb0391af05a4eaf132e0b07ca24e, type: 3}
+      propertyPath: m_Color.g
+      value: 0.8584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 8902341912928952800, guid: a8d2fb0391af05a4eaf132e0b07ca24e, type: 3}
+      propertyPath: m_Color.r
+      value: 0.29856876
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8d2fb0391af05a4eaf132e0b07ca24e, type: 3}

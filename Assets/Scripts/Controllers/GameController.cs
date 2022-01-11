@@ -6,6 +6,7 @@ using DroneBase.Interfaces;
 using DroneBase.Libraries;
 using DroneBase.Services;
 using DroneBase.Systems;
+using Sirenix.Utilities;
 
 namespace DroneBase.Controllers
 {
@@ -45,12 +46,17 @@ namespace DroneBase.Controllers
             var drones = CreateDrones(_model.PresetData.DronesPresets);
             var factories = CreateFactories(_model.PresetData.FactoriesPresets);
             var warehouses = CreateWarehouses(_model.PresetData.WarehousesPresetList);
+            var droneBases = CreateDroneBases(_model.PresetData.DroneBasesPresetList);
 
             var units = new List<IUnitController>(drones);
+            var buildings = new List<IBuildingController>();
+            buildings.AddRange(factories);
+            buildings.AddRange(warehouses);
+            buildings.AddRange(droneBases);
 
             var playerController = PlayerController.CreatePlayerController(
                 _model.Library.GetPlayerDescription(_model.PresetData.PlayerContainerId),
-                inputSystem, ui, units);
+                inputSystem, ui, units, buildings);
             
             _model.SetIsGameCreated(true);
         }
@@ -136,6 +142,33 @@ namespace DroneBase.Controllers
 
                     result.Add(WarehouseController.CreateWarehouseController(
                             _model.Library.GetBuildingDescription<IWarehouseDescription, IWarehouseModel>(
+                                preset.ContainerId),
+                            pointModel.PointData
+                        )
+                    );
+
+                    pointModel.SetIsBlocked(true);
+                }
+            }
+
+            return result;
+        }
+        
+        private List<IDroneBaseController> CreateDroneBases(IEnumerable<EntityPresetData> presets)
+        {
+            var spawnSystem = ServiceLocator.Get<ISpawnSystemService>();
+            var result = new List<IDroneBaseController>();
+            foreach (var preset in presets)
+            {
+                for (int i = 0; i < preset.Quantity; i++)
+                {
+                    var pointModel = spawnSystem
+                        .GetSpawnPointsByPredicate(x =>
+                            x.Model.PointType == EntityType.Building && x.Model.IsBlocked != true).First()
+                        .Model;
+
+                    result.Add(DroneBaseController.CreateDroneBaseController(
+                            _model.Library.GetBuildingDescription<IDroneBaseDescription, IDroneBaseModel>(
                                 preset.ContainerId),
                             pointModel.PointData
                         )

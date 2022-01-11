@@ -13,6 +13,6 @@ namespace DroneBase.Descriptions
     {
         [SerializeField, Title("Entity ID")] private IdentifierContainer _identifierContainer;
         public int Id => _identifierContainer.Id;
-        public IPlayerModel PlayerModel => new PlayerModel(new List<IUnitController>());
+        public IPlayerModel PlayerModel => new PlayerModel(new List<IUnitController>(),new List<IBuildingController>());
     }
 }

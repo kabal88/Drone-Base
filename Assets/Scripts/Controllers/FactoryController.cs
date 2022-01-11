@@ -32,7 +32,7 @@ namespace DroneBase.Controllers
         {
             var view = GameObject.Instantiate(description.Prefab, pointData.Position, pointData.Rotation)
                 .GetComponent<IFactoryView>();
-            var id = view.GetHashCode();
+            
             var model = description.BuildingModel;
 
             model.SetPosition(view.Transform.position);

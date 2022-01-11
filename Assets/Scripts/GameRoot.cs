@@ -9,7 +9,7 @@ namespace DroneBase
     public sealed class GameRoot : MonoBehaviour
     {
         [SerializeField] private IdentifierContainer _gameIdentifierContainer;
-        [SerializeField] private Library _library = new Library();
+        private Library _library = new Library();
         private GameController _gameController;
 
         private void Start()

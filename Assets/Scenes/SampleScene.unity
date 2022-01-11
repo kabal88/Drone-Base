@@ -153,8 +153,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameIdentifierContainer: {fileID: 11400000, guid: 9b1dc6e781c9c3e4393f055091ecfd29, type: 2}
-  _library:
-    Descriptions: []
 --- !u!4 &1112111789
 Transform:
   m_ObjectHideFlags: 0
@@ -247,7 +245,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5033431628592097698, guid: 91e113e6596f5bf42a493bcfad8b878c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5033431628592097698, guid: 91e113e6596f5bf42a493bcfad8b878c, type: 3}
       propertyPath: m_LocalPosition.z

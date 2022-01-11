@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DroneBase.Data;
 using DroneBase.Enums;
 using DroneBase.Interfaces;
@@ -30,11 +31,12 @@ namespace DroneBase.Controllers
             IPlayerDescription description,
             IInputSystem inputSystem,
             ICanvasController canvasController,
-            List<IUnitController> units = default)
+            List<IUnitController> units = default,
+            List<IBuildingController> buildings = default)
         {
             var model = description.PlayerModel;
 
-            if (!units.IsNullOrEmpty())
+            if (units != null)
             {
                 foreach (var unit in units)
                 {
@@ -42,11 +44,20 @@ namespace DroneBase.Controllers
                 }
             }
 
+            if (buildings != null)
+            {
+                foreach (var build in buildings)
+                {
+                    model.AddBuilding(build);
+                }
+            }
+
+
             var player = new PlayerController(model, inputSystem, canvasController);
-            
+
             ServiceLocator.Get<ISelectionService>().Selected += player.OnSelected;
             canvasController.AlarmClicked += player.OnAlarmed;
-            
+
             return player;
         }
 
@@ -82,15 +93,22 @@ namespace DroneBase.Controllers
         private void OnAlarmed()
         {
             CustomDebug.Log($"Alarm pressed!");
-            
-            _playerModel.SetIsAlarmOn(!_playerModel.IsAlarmOn);
-            _canvas.SetAlarm(_playerModel.IsAlarmOn);
 
-            if (_playerModel.IsAlarmOn)
+            var alarm = !_playerModel.IsAlarmOn;
+
+            _playerModel.SetIsAlarmOn(alarm);
+            _canvas.SetAlarm(alarm);
+
+            foreach (var droneBase in _playerModel.AllDroneBase)
+            {
+                droneBase.SetGate(true);
+            }
+            
+            if (alarm)
             {
                 foreach (var drone in _playerModel.AllDrones)
                 {
-                    drone.SetState(new DroneAlertState(drone));
+                    drone.SetState(new DroneAlertState(drone, _playerModel.AllDroneBase.First()));
                 }
             }
             else
@@ -100,8 +118,6 @@ namespace DroneBase.Controllers
                     drone.SetState(new DroneIdleState(drone));
                 }
             }
-
-            
         }
     }
 }

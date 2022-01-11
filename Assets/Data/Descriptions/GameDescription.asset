@@ -24,8 +24,10 @@ MonoBehaviour:
         _quantity: 1
       _warehousesPresetList:
       - _identifierContainer: {fileID: 11400000, guid: b822d181bdfb5e44abc4403e273edd43, type: 2}
+        _quantity: 2
+      _droneBasesPresetList:
+      - _identifierContainer: {fileID: 11400000, guid: b0975ac39c6dc444387df9604adff9ef, type: 2}
         _quantity: 1
-      _droneBasesPresetList: []
       _dronesPresetList:
       - _identifierContainer: {fileID: 11400000, guid: 1515249dbe72b464fb76ab04853bd559, type: 2}
         _quantity: 2

@@ -61,13 +61,12 @@ namespace DroneBase.States
 
         public override void OnSensorCollide(Collider other)
         {
-            CustomDebug.Log($"sensor find: {other.name}");
             if (!other.TryGetComponent<IActionArea>(out var obj)) return;
 
             var view = obj.GetView;
-            CustomDebug.Log($"Collide with {obj.GetView.Id}");
             if (view.Id != Context.Model.CurrentTargetData.Id) return;
-            CustomDebug.Log($"ID {view.Id} matched with {Context.Model.CurrentTargetData.Id}");
+
+            CustomDebug.Log($"Sensor Collide");
             
             switch (view)
             {

@@ -40,7 +40,7 @@ namespace DroneBase.Views
 
         public void SetAlarm(bool isOn)
         {
-            CustomDebug.Log($"isOn = {isOn}");
+            _alarmButton.SetButtonPress(isOn);
         }
     }
 }
