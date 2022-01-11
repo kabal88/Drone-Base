@@ -2,7 +2,7 @@
 {
     public interface IState<T> where T :IContext
     {
-        public T Context { get; }
+        public T Drone { get; }
         void EnterState();
         void ExitState();
     }

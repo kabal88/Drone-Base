@@ -13,11 +13,13 @@ namespace DroneBase.Models
         public float RotationSpeed { get; }
         public Vector3 Position { get; private set; }
         public Vector3 Direction { get; private set; }
-        public Vector3? PreviousTarget { get; private set; }
-        public TargetData CurrentTargetData { get; private set; }
+        public TargetData PreviousTarget { get; private set; }
+        public TargetData CurrentTarget { get; private set; }
         public Quaternion Rotation { get; private set; }
         public EntityType Type { get; }
         public ResourcesContainer Container { get; private set; }
+        public IUnitState PreviousState { get; private set;}
+
 
 
         public DroneModel(MoveData moveData, RotationData rotationData, EntityType type)
@@ -28,13 +30,18 @@ namespace DroneBase.Models
             Position = moveData.Position;
             RotationSpeed = rotationData.RotationSpeed;
             Rotation = Quaternion.Euler(rotationData.Rotation);
-            PreviousTarget = null;
+            PreviousTarget = new TargetData();
         }
 
         public void SetTargetData(TargetData data)
         {
-            PreviousTarget = CurrentTargetData.Point;
-            CurrentTargetData = data;
+            PreviousTarget = CurrentTarget;
+            CurrentTarget = data;
+        }
+
+        public void SetPreviousState(IUnitState state)
+        {
+            PreviousState = state;
         }
 
         public void SetPosition(Vector3 position)

@@ -9,14 +9,14 @@ namespace DroneBase.States
 {
     public class DroneMovingToPointState : UnitStateBase
     {
-        public DroneMovingToPointState(IDroneController context) : base(context)
+        public DroneMovingToPointState(IDroneController drone) : base(drone)
         {
         }
 
         public override void EnterState()
         {
             CustomDebug.Log($"Enter state DroneMovingToPointState");
-            Context.MoveSystem.SetDestination(Context.Model.CurrentTargetData.Point);
+            Drone.MoveSystem.SetDestination(Drone.Model.CurrentTarget.Point);
         }
 
         public override void ExitState()
@@ -55,12 +55,12 @@ namespace DroneBase.States
                 case EntityType.None:
                 case EntityType.Unit:
                     model.SetTargetData(target);
-                    Context.MoveSystem.SetDestination(target.Point);
+                    Drone.MoveSystem.SetDestination(target.Point);
                     break;
                 case EntityType.Building:
                     model.SetTargetData(target);
                     ExitState();
-                    Context.SetState(new DroneMovingToBuildingState(Context));
+                    Drone.SetState(new DroneMovingToBuildingState(Drone));
                     break;
                 case EntityType.Camera:
                     break;
@@ -72,10 +72,10 @@ namespace DroneBase.States
 
         private void CheckReachDestination()
         {
-            if (!Context.MoveSystem.IsReachDestination) return;
+            if (!Drone.MoveSystem.IsReachDestination) return;
             
             ExitState();
-            Context.SetState(new DroneIdleState(Context));
+            Drone.SetState(new DroneIdleState(Drone));
         }
     }
 }

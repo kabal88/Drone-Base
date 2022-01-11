@@ -115,7 +115,7 @@ namespace DroneBase.Controllers
             {
                 foreach (var drone in _playerModel.AllDrones)
                 {
-                    drone.SetState(new DroneIdleState(drone));
+                    drone.PreviousState();
                 }
             }
         }

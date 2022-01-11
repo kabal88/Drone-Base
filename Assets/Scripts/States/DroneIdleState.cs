@@ -9,7 +9,7 @@ namespace DroneBase.States
 {
     public class DroneIdleState : UnitStateBase
     {
-        public DroneIdleState(IDroneController context) : base(context)
+        public DroneIdleState(IDroneController drone) : base(drone)
         {
         }
 
@@ -31,11 +31,12 @@ namespace DroneBase.States
                 case EntityType.Unit:
                     model.SetTargetData(target);
                     ExitState();
-                    Context.SetState(new DroneMovingToPointState(Context));
+                    Drone.SetState(new DroneMovingToPointState(Drone));
                     break;
                 case EntityType.Building:
                     model.SetTargetData(target);
-                    Context.SetState(new DroneMovingToBuildingState(Context));
+                    ExitState();
+                    Drone.SetState(new DroneMovingToBuildingState(Drone));
                     break;
                 case EntityType.Camera:
                     break;

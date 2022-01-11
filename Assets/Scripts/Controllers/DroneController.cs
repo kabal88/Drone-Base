@@ -24,7 +24,7 @@ namespace DroneBase.Controllers
         public int Id => _droneModel.Id;
         public EntityType Type => _droneModel.Type;
         public ISelect GetSelect => this;
-        public Vector3? PreviousTarget => _droneModel.PreviousTarget;
+        public TargetData PreviousTarget => _droneModel.PreviousTarget;
         public IMoveSystem MoveSystem { get; }
         public IUnitModel Model => _droneModel;
         public IAbilitiesSystem AbilitiesSystem { get; }
@@ -45,7 +45,7 @@ namespace DroneBase.Controllers
         }
 
         public static DroneController CreateDroneController(IDroneDescription description, SpawnPointData pointData,
-            Library library)                            //TODO: убрать передачу всей библиотеки
+            Library library)                            //TODO:попробовать убрать передачу всей библиотеки
         {
             var view =
                 GameObject.Instantiate(description.Prefab, pointData.Position, pointData.Rotation)
@@ -85,8 +85,16 @@ namespace DroneBase.Controllers
 
         public void SetState(IUnitState state)
         {
+            _droneModel.SetPreviousState(_unitState);
             _unitState = state;
             _unitState.EnterState();
+        }
+
+        public void PreviousState()
+        {
+            _unitState.ExitState();
+            SetState(_droneModel.PreviousState);
+            SetTarget(_droneModel.PreviousTarget);
         }
 
         private void OnViewSelected()

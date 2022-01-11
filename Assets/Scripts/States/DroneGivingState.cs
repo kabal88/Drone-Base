@@ -9,7 +9,7 @@ namespace DroneBase.States
     public class DroneGivingState : UnitStateBase
     {
         private IResourceReceiver _receiver;
-        public DroneGivingState(IDroneController context, IResourceReceiver receiver) : base(context)
+        public DroneGivingState(IDroneController drone, IResourceReceiver receiver) : base(drone)
         {
             _receiver = receiver;
         }
@@ -19,9 +19,9 @@ namespace DroneBase.States
             CustomDebug.Log($"Enter state DroneGivingState");
             
             if (_receiver is ITargetable targetable)
-                Context.AbilitiesSystem.ExecuteAbility(Context, DroneAbility.Give, targetable.GetTarget);
+                Drone.AbilitiesSystem.ExecuteAbility(Drone, DroneAbility.Give, targetable.GetTarget);
             ExitState();
-            Context.SetState(new DroneIdleState(Context));
+            Drone.SetState(new DroneIdleState(Drone));
         }
 
         public override void ExitState()

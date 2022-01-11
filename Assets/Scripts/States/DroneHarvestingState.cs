@@ -10,7 +10,7 @@ namespace DroneBase.States
     {
         private IResourceProvider _provider;
 
-        public DroneHarvestingState(IDroneController context, IResourceProvider provider) : base(context)
+        public DroneHarvestingState(IDroneController drone, IResourceProvider provider) : base(drone)
         {
             _provider = provider;
         }
@@ -19,9 +19,9 @@ namespace DroneBase.States
         {
             CustomDebug.Log($"Enter state DroneHarvestingState");
             if (_provider is ITargetable targetable)
-                Context.AbilitiesSystem.ExecuteAbility(Context, DroneAbility.Collect, targetable.GetTarget);
+                Drone.AbilitiesSystem.ExecuteAbility(Drone, DroneAbility.Collect, targetable.GetTarget);
             ExitState();
-            Context.SetState(new DroneIdleState(Context));
+            Drone.SetState(new DroneIdleState(Drone));
         }
 
         public override void ExitState()

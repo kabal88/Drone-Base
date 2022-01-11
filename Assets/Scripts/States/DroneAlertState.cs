@@ -1,5 +1,6 @@
 ﻿using System;
 using DroneBase.Data;
+using DroneBase.Enums;
 using DroneBase.Interfaces;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ namespace DroneBase.States
     public class DroneAlertState : UnitStateBase
     {
         private ITarget _targetBase;
-        public DroneAlertState(IDroneController context, ITarget targetBase) : base(context)
+        public DroneAlertState(IDroneController drone, ITarget targetBase) : base(drone)
         {
             _targetBase = targetBase;
         }
@@ -16,7 +17,8 @@ namespace DroneBase.States
         public override void EnterState()
         {
             CustomDebug.Log($"Enter state DroneAlertState");
-            Context.MoveSystem.SetDestination(_targetBase.TargetData.Point);
+            Drone.Model.SetTargetData(_targetBase.TargetData);
+            Drone.MoveSystem.SetDestination(_targetBase.TargetData.Point);
         }
 
         public override void ExitState()
@@ -49,25 +51,11 @@ namespace DroneBase.States
             if (!other.TryGetComponent<IActionArea>(out var obj)) return;
 
             var view = obj.GetView;
-            if (view.Id != Context.Model.CurrentTargetData.Id) return;
+            if (view.Id != Drone.Model.CurrentTarget.Id) return;
             
             CustomDebug.Log($"Sensor Collide");
             
-            switch (view)
-            {
-                case IResourceProvider giver:
-                    ExitState();
-                    Context.SetState(new DroneHarvestingState(Context, giver));
-                    break;
-                case IResourceReceiver receiver:
-                    ExitState();
-                    Context.SetState(new DroneGivingState(Context, receiver));
-                    break;
-                default:
-                    ExitState();
-                    Context.SetState(new DroneIdleState(Context));
-                    break;
-            }
+                //todo: вставить распознование базы
         }
 
         public override void FixedUpdateLocal()

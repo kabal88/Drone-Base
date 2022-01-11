@@ -8,14 +8,14 @@ namespace DroneBase.States
 {
     public class DroneMovingToBuildingState : UnitStateBase
     {
-        public DroneMovingToBuildingState(IDroneController context) : base(context)
+        public DroneMovingToBuildingState(IDroneController drone) : base(drone)
         {
         }
 
         public override void EnterState()
         {
             CustomDebug.Log($"Enter state DroneMovingToBuildingState");
-            Context.MoveSystem.SetDestination(Context.Model.CurrentTargetData.Point);
+            Drone.MoveSystem.SetDestination(Drone.Model.CurrentTarget.Point);
         }
 
         public override void ExitState()
@@ -31,11 +31,11 @@ namespace DroneBase.States
                 case EntityType.Unit:
                     model.SetTargetData(target);
                     ExitState();
-                    Context.SetState(new DroneMovingToPointState(Context));
+                    Drone.SetState(new DroneMovingToPointState(Drone));
                     break;
                 case EntityType.Building:
                     model.SetTargetData(target);
-                    Context.MoveSystem.SetDestination(target.Point);
+                    Drone.MoveSystem.SetDestination(target.Point);
                     break;
                 case EntityType.Camera:
                     break;
@@ -64,7 +64,7 @@ namespace DroneBase.States
             if (!other.TryGetComponent<IActionArea>(out var obj)) return;
 
             var view = obj.GetView;
-            if (view.Id != Context.Model.CurrentTargetData.Id) return;
+            if (view.Id != Drone.Model.CurrentTarget.Id) return;
 
             CustomDebug.Log($"Sensor Collide");
             
@@ -72,15 +72,15 @@ namespace DroneBase.States
             {
                 case IResourceProvider giver:
                     ExitState();
-                    Context.SetState(new DroneHarvestingState(Context, giver));
+                    Drone.SetState(new DroneHarvestingState(Drone, giver));
                     break;
                 case IResourceReceiver receiver:
                     ExitState();
-                    Context.SetState(new DroneGivingState(Context, receiver));
+                    Drone.SetState(new DroneGivingState(Drone, receiver));
                     break;
                 default:
                     ExitState();
-                    Context.SetState(new DroneIdleState(Context));
+                    Drone.SetState(new DroneIdleState(Drone));
                     break;
             }
         }

@@ -7,11 +7,11 @@ namespace DroneBase.States
 {
     public abstract class UnitStateBase :IUnitState
     {
-        public IDroneController Context { get; }
+        public IDroneController Drone { get; }
 
-        protected UnitStateBase(IDroneController context)
+        protected UnitStateBase(IDroneController drone)
         {
-            Context = context;
+            Drone = drone;
         }
         
         public abstract void EnterState();

@@ -5,8 +5,10 @@ namespace DroneBase.Interfaces
 {
     public interface IUnitModel: IMove, IRotate, IEntityType, IIdentifier
     {
-        public Vector3? PreviousTarget { get; }
-        public TargetData CurrentTargetData { get; }
+        public TargetData PreviousTarget { get; }
+        public TargetData CurrentTarget { get; }
+        IUnitState PreviousState { get; }
         void SetTargetData(TargetData data);
+        void SetPreviousState(IUnitState state);
     }
 }
