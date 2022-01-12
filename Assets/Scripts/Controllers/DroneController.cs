@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DroneBase.Abilities;
 using DroneBase.Data;
 using DroneBase.Enums;
@@ -16,17 +17,19 @@ namespace DroneBase.Controllers
         public event Action<ISelect> Selected;
         public event Action<ResourcesContainer> ResourcesReceived;
         public event Action<ResourcesContainer> ResourcesProvide;
+        public event Action EnterSaveArea;
 
-        private IDroneModel _droneModel;
-        private IDroneView _droneView;
+        private readonly IDroneModel _model;
+        private readonly IDroneView _view;
         private IUnitState _unitState;
 
-        public int Id => _droneModel.Id;
-        public EntityType Type => _droneModel.Type;
+        public bool IsInSaveArea => _model.InSaveArea;
+        public int Id => _model.Id;
+        public EntityType Type => _model.Type;
         public ISelect GetSelect => this;
-        public TargetData PreviousTarget => _droneModel.PreviousTarget;
+        public TargetData PreviousTarget => _model.PreviousTarget;
         public IMoveSystem MoveSystem { get; }
-        public IUnitModel Model => _droneModel;
+        public IUnitModel Model => _model;
         public IAbilitiesSystem AbilitiesSystem { get; }
 
 
@@ -39,13 +42,13 @@ namespace DroneBase.Controllers
         {
             MoveSystem = moveSystem;
             AbilitiesSystem = abilitiesSystem;
-            _droneModel = model;
-            _droneView = view;
-            _droneView.Selected += OnViewSelected;
+            _model = model;
+            _view = view;
+            _view.Selected += OnViewSelected;
         }
 
         public static DroneController CreateDroneController(IDroneDescription description, SpawnPointData pointData,
-            Library library)                            //TODO:попробовать убрать передачу всей библиотеки
+            Dictionary<int, IAbilityDescription> abilityDescriptions)
         {
             var view =
                 GameObject.Instantiate(description.Prefab, pointData.Position, pointData.Rotation)
@@ -56,13 +59,15 @@ namespace DroneBase.Controllers
             view.SetNavMeshSettings(model.Speed, model.RotationSpeed);
             view.SetID(model.Id);
 
-            var abilitySystem = AbilitySystem.CreateAbilitiesSystem(description.AvailableAbilitiesMap, library);
+            var abilitySystem =
+                AbilitySystem.CreateAbilitiesSystem(description.AvailableAbilitiesMap, abilityDescriptions);
 
             var drone = new DroneController(model, view, new NavMeshMovingSystem(view.NavMeshAgent), abilitySystem);
 
             ServiceLocator.Get<ISelectionService>().RegisterObject(drone);
             ServiceLocator.Get<IFixUpdateService>().RegisterObject(drone);
-            view.SensorCollide += drone.OnSensorCollide;
+            view.SensorEnterTrigger += drone.OnSensorEnterTrigger;
+            view.SensorExitTrigger += drone.OnSensorExitTrigger;
 
             drone.SetState(new DroneIdleState(drone));
             return drone;
@@ -70,22 +75,22 @@ namespace DroneBase.Controllers
 
         public void SetTarget(TargetData target)
         {
-            _unitState.SetTarget(target, _droneModel);
+            _unitState.SetTarget(target, _model);
         }
 
         public void SetSelection()
         {
-            _unitState.SetSelection(_droneView);
+            _unitState.SetSelection(_view);
         }
 
         public void ClearSelection()
         {
-            _unitState.ClearSelection(_droneView);
+            _unitState.ClearSelection(_view);
         }
 
         public void SetState(IUnitState state)
         {
-            _droneModel.SetPreviousState(_unitState);
+            _model.SetPreviousState(_unitState);
             _unitState = state;
             _unitState.EnterState();
         }
@@ -93,8 +98,8 @@ namespace DroneBase.Controllers
         public void PreviousState()
         {
             _unitState.ExitState();
-            SetState(_droneModel.PreviousState);
-            SetTarget(_droneModel.PreviousTarget);
+            SetState(_model.PreviousState);
+            SetTarget(_model.PreviousTarget);
         }
 
         private void OnViewSelected()
@@ -102,40 +107,53 @@ namespace DroneBase.Controllers
             _unitState.OnViewSelected(this, Selected);
         }
 
-        private void OnSensorCollide(Collider collider)
+        private void OnSensorEnterTrigger(Collider collider)
         {
-            _unitState.OnSensorCollide(collider);
+            _unitState.OnSensorEnterTrigger(collider);
+        }
+
+        private void OnSensorExitTrigger(Collider collider)
+        {
+            _unitState.OnSensorExitTrigger(collider);
         }
 
         public void TakeResources(ResourcesContainer container)
         {
-            _droneModel.SetResourcesContainer(container);
-        }
-
-        public void AskForResources(IResourceReceiver receiver, int quantity)
-        {
-            receiver.TakeResources(_droneModel.Container);
-        }
-
-        public void Dispose()
-        {
-            _droneView.Selected -= OnViewSelected;
-            _droneView.SensorCollide -= OnSensorCollide;
-            ServiceLocator.Get<IFixUpdateService>().UnRegisterObject(this);
-            ServiceLocator.Get<ISelectionService>().UnRegisterObject(this);
+            _model.SetResourcesContainer(container);
+            _view.SetResourceVisibility(true);
         }
 
         public void FixedUpdateLocal()
         {
             _unitState.FixedUpdateLocal();
+            _view.SetAnimationVelocity(MoveSystem.SqrVelocity / (_model.Speed * _model.Speed));
         }
 
 
         public ResourcesContainer GetResources(int quantity)
         {
-            var resource = _droneModel.Container;
-            _droneModel.SetResourcesContainer(new ResourcesContainer());
+            var resource = _model.Container;
+            _model.SetResourcesContainer(new ResourcesContainer());
+            _view.SetResourceVisibility(false);
             return resource;
+        }
+
+        public void SetInSaveArea(bool inSave)
+        {
+            _model.SetInSaveArea(inSave);
+            if (inSave)
+            {
+                EnterSaveArea?.Invoke();
+            }
+        }
+
+        public void Dispose()
+        {
+            _view.Selected -= OnViewSelected;
+            _view.SensorEnterTrigger -= OnSensorEnterTrigger;
+            _view.SensorExitTrigger -= OnSensorExitTrigger;
+            ServiceLocator.Get<IFixUpdateService>().UnRegisterObject(this);
+            ServiceLocator.Get<ISelectionService>().UnRegisterObject(this);
         }
     }
 }

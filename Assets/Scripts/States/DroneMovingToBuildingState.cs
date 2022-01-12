@@ -59,7 +59,7 @@ namespace DroneBase.States
             callback.Invoke(obj);
         }
 
-        public override void OnSensorCollide(Collider other)
+        public override void OnSensorEnterTrigger(Collider other)
         {
             if (!other.TryGetComponent<IActionArea>(out var obj)) return;
 
@@ -82,6 +82,18 @@ namespace DroneBase.States
                     ExitState();
                     Drone.SetState(new DroneIdleState(Drone));
                     break;
+            }
+        }
+
+        public override void OnSensorExitTrigger(Collider other)
+        {
+            if (!other.TryGetComponent<IActionArea>(out var obj)) return;
+
+            var view = obj.GetView;
+
+            if (view is ISaveArea)
+            {
+                Drone.SetInSaveArea(false);
             }
         }
 

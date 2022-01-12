@@ -14,18 +14,21 @@ namespace DroneBase.Abilities
             _abilities = abilities;
         }
 
-        public static AbilitySystem CreateAbilitiesSystem(Dictionary<DroneAbility,int> availableAbilitiesMap, Library library)
+        public static AbilitySystem CreateAbilitiesSystem(Dictionary<DroneAbility, int> availableAbilitiesMap,
+            Dictionary<int, IAbilityDescription> descriptions)
         {
             var abilities = new Dictionary<DroneAbility, IAbility>();
 
             foreach (var key in availableAbilitiesMap.Keys)
             {
-                var description = library.GetAbilityDescription(availableAbilitiesMap[key]);
-                abilities.Add(key,description.GetAbility());
+                if (descriptions.TryGetValue(availableAbilitiesMap[key], out var description))
+                {
+                    abilities.Add(key, description.GetAbility());
+                }
             }
-            
+
             var system = new AbilitySystem(abilities);
-            
+
             return system;
         }
 
@@ -33,7 +36,7 @@ namespace DroneBase.Abilities
         {
             if (_abilities.TryGetValue(index, out var ability))
             {
-                ability.Execute(owner,target);
+                ability.Execute(owner, target);
             }
         }
     }

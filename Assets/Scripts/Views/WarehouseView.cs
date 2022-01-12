@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace DroneBase.Views
 {
-    public class WarehouseView : MonoBehaviour, IWarehouseView
+    public class WarehouseView : MonoBehaviour, IWarehouseView, IDisposable
     {
         public event Action Selected;
         public event Action<ResourcesContainer> ResourcesProvide;
@@ -29,6 +29,7 @@ namespace DroneBase.Views
             _controller = controller;
             _model = model;
             _actionArea.SetView(this);
+            _controller.ResourcesProvide += ResourcesProvide;
         }
 
         public void PlaySelectionAnimation()
@@ -54,6 +55,11 @@ namespace DroneBase.Views
         public ResourcesContainer GetResources(int quantity)
         {
             return _controller.GetResources(quantity);
+        }
+
+        public void Dispose()
+        {
+            _controller.ResourcesProvide -= ResourcesProvide;
         }
     }
 }

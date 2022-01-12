@@ -8,6 +8,7 @@ namespace DroneBase.Models
 {
     public sealed class DroneModel : IDroneModel
     {
+        public bool InSaveArea { get; private set; }
         public int Id { get; }
         public float Speed { get; }
         public float RotationSpeed { get; }
@@ -18,8 +19,7 @@ namespace DroneBase.Models
         public Quaternion Rotation { get; private set; }
         public EntityType Type { get; }
         public ResourcesContainer Container { get; private set; }
-        public IUnitState PreviousState { get; private set;}
-
+        public IUnitState PreviousState { get; private set; }
 
 
         public DroneModel(MoveData moveData, RotationData rotationData, EntityType type)
@@ -42,6 +42,11 @@ namespace DroneBase.Models
         public void SetPreviousState(IUnitState state)
         {
             PreviousState = state;
+        }
+
+        public void SetInSaveArea(bool inSave)
+        {
+            InSaveArea = inSave;
         }
 
         public void SetPosition(Vector3 position)

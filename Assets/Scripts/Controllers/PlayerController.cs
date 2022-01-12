@@ -6,15 +6,14 @@ using DroneBase.Enums;
 using DroneBase.Interfaces;
 using DroneBase.Services;
 using DroneBase.States;
-using Sirenix.Utilities;
 
 namespace DroneBase.Controllers
 {
     public sealed class PlayerController : IDisposable
     {
-        private IPlayerModel _playerModel;
-        private IInputSystem _inputSystem;
-        private ICanvasController _canvas;
+        private readonly IPlayerModel _model;
+        private readonly IInputSystem _inputSystem;
+        private readonly ICanvasController _canvas;
 
         private PlayerController(
             IPlayerModel playerModel,
@@ -23,7 +22,7 @@ namespace DroneBase.Controllers
         {
             _inputSystem = inputSystem;
             _canvas = canvas;
-            _playerModel = playerModel;
+            _model = playerModel;
             _inputSystem.RightMouseButtonClick += SetTarget;
         }
 
@@ -58,20 +57,45 @@ namespace DroneBase.Controllers
             ServiceLocator.Get<ISelectionService>().Selected += player.OnSelected;
             canvasController.AlarmClicked += player.OnAlarmed;
 
+            foreach (var drone in model.AllDrones)
+            {
+                drone.EnterSaveArea += player.CheckAllInSaveAndCloseGates;
+            }
+
             return player;
+        }
+
+        private void CheckAllInSaveAndCloseGates()
+        {
+            var result = true;
+            foreach (var drone in _model.AllDrones)
+            {
+                if (!drone.IsInSaveArea)
+                {
+                    result = false;
+                }
+            }
+
+            if (result)
+            {
+                foreach (var droneBase in _model.AllDroneBase)
+                {
+                    droneBase.SetGate(false);
+                }
+            }
         }
 
         private void OnSelected(ISelect obj)
         {
-            _playerModel.SelectedObject?.ClearSelection();
+            _model.SelectedObject?.ClearSelection();
 
-            _playerModel.SetSelectedObject(obj);
+            _model.SetSelectedObject(obj);
             obj.SetSelection();
         }
 
         private void SetTarget(CustomRaycastHit hit)
         {
-            if (!(_playerModel.SelectedObject is IAimable aimable)) return;
+            if (!(_model.SelectedObject is IAimable aimable)) return;
 
             aimable.SetTarget(hit.HasTargetable
                 ? hit.Targetable.GetTarget.TargetData
@@ -80,7 +104,7 @@ namespace DroneBase.Controllers
 
         public void SetSelectedUnit(IUnitController selected)
         {
-            _playerModel.SetSelectedObject(selected);
+            _model.SetSelectedObject(selected);
         }
 
         public void Dispose()
@@ -94,26 +118,26 @@ namespace DroneBase.Controllers
         {
             CustomDebug.Log($"Alarm pressed!");
 
-            var alarm = !_playerModel.IsAlarmOn;
+            var alarm = !_model.IsAlarmOn;
 
-            _playerModel.SetIsAlarmOn(alarm);
+            _model.SetIsAlarmOn(alarm);
             _canvas.SetAlarm(alarm);
 
-            foreach (var droneBase in _playerModel.AllDroneBase)
+            foreach (var droneBase in _model.AllDroneBase)
             {
                 droneBase.SetGate(true);
             }
             
             if (alarm)
             {
-                foreach (var drone in _playerModel.AllDrones)
+                foreach (var drone in _model.AllDrones)
                 {
-                    drone.SetState(new DroneAlertState(drone, _playerModel.AllDroneBase.First()));
+                    drone.SetState(new DroneAlertState(drone, _model.AllDroneBase.First()));
                 }
             }
             else
             {
-                foreach (var drone in _playerModel.AllDrones)
+                foreach (var drone in _model.AllDrones)
                 {
                     drone.PreviousState();
                 }

@@ -5,10 +5,12 @@ namespace DroneBase.Interfaces
 {
     public interface IUnitModel: IMove, IRotate, IEntityType, IIdentifier
     {
-        public TargetData PreviousTarget { get; }
-        public TargetData CurrentTarget { get; }
+        bool InSaveArea { get; }
+        TargetData PreviousTarget { get; }
+        TargetData CurrentTarget { get; }
         IUnitState PreviousState { get; }
         void SetTargetData(TargetData data);
         void SetPreviousState(IUnitState state);
+        void SetInSaveArea(bool inSave);
     }
 }

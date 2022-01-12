@@ -10,6 +10,7 @@ namespace DroneBase.Interfaces
         void SetSelection(ISelectionView view);
         void ClearSelection(ISelectionView view);
         void OnViewSelected(ISelect obj, Action<ISelect> callback);
-        void OnSensorCollide(Collider other);
+        void OnSensorEnterTrigger(Collider other);
+        void OnSensorExitTrigger(Collider other);
     }
 }

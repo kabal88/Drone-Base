@@ -85,9 +85,15 @@ namespace DroneBase.Controllers
 
         public ResourcesContainer GetResources(int quantity)
         {
-            return _model.TryGetResource(new ResourcesContainer(quantity, _model.StorageResourceType), out quantity)
-                ? new ResourcesContainer(quantity, _model.StorageResourceType)
-                : new ResourcesContainer();
+            var container = new ResourcesContainer();
+            
+            if (_model.TryGetResource(new ResourcesContainer(quantity, _model.StorageResourceType), out quantity))
+            {
+                container = new ResourcesContainer(quantity, _model.StorageResourceType);
+                ResourcesProvide?.Invoke(container);
+            }
+
+            return container;
         }
     }
 }

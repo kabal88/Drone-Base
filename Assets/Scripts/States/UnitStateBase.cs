@@ -20,7 +20,8 @@ namespace DroneBase.States
         public abstract void SetSelection(ISelectionView view);
         public abstract void ClearSelection(ISelectionView view);
         public abstract void OnViewSelected(ISelect obj, Action<ISelect> callback);
-        public abstract void OnSensorCollide(Collider other);
+        public abstract void OnSensorEnterTrigger(Collider other);
+        public abstract void OnSensorExitTrigger(Collider other);
         public abstract void FixedUpdateLocal();
     }
 }

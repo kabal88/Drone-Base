@@ -48,8 +48,13 @@ namespace DroneBase.States
             callback.Invoke(obj);
         }
 
-        public override void OnSensorCollide(Collider other)
+        public override void OnSensorEnterTrigger(Collider other)
         {
+        }
+
+        public override void OnSensorExitTrigger(Collider other)
+        {
+            
         }
 
         public override void FixedUpdateLocal()

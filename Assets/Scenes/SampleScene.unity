@@ -153,6 +153,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameIdentifierContainer: {fileID: 11400000, guid: 9b1dc6e781c9c3e4393f055091ecfd29, type: 2}
+  _library:
+    Descriptions:
+    - {fileID: 11400000, guid: bdb2d52d2db69cb468fa00bb81187c1d, type: 2}
+    - {fileID: 11400000, guid: 6fe1435d8b3cf88408dccca15d60ed6b, type: 2}
+    - {fileID: 11400000, guid: 5ef1573586884054692dcba17bcf7bed, type: 2}
+    - {fileID: 11400000, guid: 966c163ecb5b8d24bbcc9d63f0b3e888, type: 2}
+    - {fileID: 11400000, guid: 518260df50abefa40afde18beee29fb3, type: 2}
+    - {fileID: 11400000, guid: 5f4d806c446e49e4e9a62d80fe30ac08, type: 2}
+    - {fileID: 11400000, guid: 6e28fc573ecb58c4883566caf50f2751, type: 2}
+    - {fileID: 11400000, guid: 1404ded16d745bc4da22c475f1fe341e, type: 2}
+    - {fileID: 11400000, guid: 04a2d248b90d74a4982d219458cb5325, type: 2}
+    - {fileID: 11400000, guid: b8fd9d7174b866245a607b3a7d28ab6a, type: 2}
+    - {fileID: 11400000, guid: be05c67ef118165419f8800f26855629, type: 2}
 --- !u!4 &1112111789
 Transform:
   m_ObjectHideFlags: 0

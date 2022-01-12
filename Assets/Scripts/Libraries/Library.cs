@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DroneBase.Descriptions;
 using DroneBase.Interfaces;
+using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
@@ -26,9 +27,10 @@ namespace DroneBase.Libraries
         private Dictionary<int, IBuildingDescription<IBuildingModel>> _buildingDescriptions =
             new Dictionary<int, IBuildingDescription<IBuildingModel>>();
 
-        private Dictionary<int, IAbilityDescription> _abilityDescriptions = new Dictionary<int, IAbilityDescription>();
-
         private Dictionary<int, ICanvasDescription> _canvasDescriptions = new Dictionary<int, ICanvasDescription>();
+
+        public Dictionary<int, IAbilityDescription> AbilityDescriptions { get; } =
+            new Dictionary<int, IAbilityDescription>();
 
         public void Init()
         {
@@ -55,15 +57,19 @@ namespace DroneBase.Libraries
                         _buildingDescriptions.Add(description.GetDescription.Id, building);
                         break;
                     case IAbilityDescription ability:
-                        _abilityDescriptions.Add(description.GetDescription.Id,ability);
+                        AbilityDescriptions.Add(description.GetDescription.Id, ability);
                         break;
                     case ICanvasDescription canvas:
-                        _canvasDescriptions.Add(description.GetDescription.Id,canvas);
+                        _canvasDescriptions.Add(description.GetDescription.Id, canvas);
                         break;
                 }
             }
         }
 
+        /// <summary>
+        /// Используется ТОЛЬКО из редактора после добавления нового Discription в проект.
+        /// </summary>
+        [Button(ButtonSizes.Large), GUIColor(0.5f, 0.8f, 1f)]
         public void LoadAllAssets()
         {
             Descriptions = AssetDatabase.FindAssets("t:Description")
@@ -71,7 +77,8 @@ namespace DroneBase.Libraries
                 .Select(AssetDatabase.LoadAssetAtPath<Description>).ToList();
         }
 
-        public TDescription GetUnitDescription<TDescription, TModel>(int id) where TDescription : IUnitDescription<TModel> where TModel : IUnitModel
+        public TDescription GetUnitDescription<TDescription, TModel>(int id)
+            where TDescription : IUnitDescription<TModel> where TModel : IUnitModel
         {
             if (_unitDescriptions.TryGetValue(id, out var needed))
             {
@@ -121,7 +128,8 @@ namespace DroneBase.Libraries
             throw new Exception($"SpawnSystem desc. with id {id} not found");
         }
 
-        public TDescription GetBuildingDescription<TDescription, TModel>(int id) where TDescription : IBuildingDescription<TModel> where TModel : IBuildingModel
+        public TDescription GetBuildingDescription<TDescription, TModel>(int id)
+            where TDescription : IBuildingDescription<TModel> where TModel : IBuildingModel
         {
             if (_buildingDescriptions.TryGetValue(id, out var needed))
             {
@@ -133,7 +141,7 @@ namespace DroneBase.Libraries
 
         public IAbilityDescription GetAbilityDescription(int id)
         {
-            if (_abilityDescriptions.TryGetValue(id, out var needed))
+            if (AbilityDescriptions.TryGetValue(id, out var needed))
             {
                 return needed;
             }

@@ -7,7 +7,9 @@ namespace DroneBase.Systems
     public sealed class NavMeshMovingSystem : IMoveSystem
     {
         public bool IsReachDestination => IsAgentReachDestination();
-        
+        public float SqrVelocity => _navMeshAgent.velocity.sqrMagnitude;
+        public float Acceleration { get; }
+
         private readonly NavMeshAgent _navMeshAgent;
 
         public NavMeshMovingSystem(NavMeshAgent navMeshAgent)
